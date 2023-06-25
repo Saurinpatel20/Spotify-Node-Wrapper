@@ -293,9 +293,7 @@ Retrieves the current user's profile information.
 Retrieves a list of the user's top tracks or artists.
 
 ### getUserProfile
-Retrie
-
-ves the profile information of a specific user.
+Retrieves the profile information of a specific user.
 
 ### followPlaylist
 Follows a specific playlist.
