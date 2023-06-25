@@ -167,9 +167,7 @@ Starts or resumes playback on the user's active device.
 Pauses playback on the user's active device.
 
 ### skipToNextTrack
-Skips to the next
-
- track in the user's playback queue.
+Skips to the next track in the user's playback queue.
 
 ### skipToPreviousTrack
 Skips to the previous track in the user's playback queue.
