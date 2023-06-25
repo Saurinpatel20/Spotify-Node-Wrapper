@@ -1,0 +1,26 @@
+{
+  "name": "spotify-node-wrapper",
+  "version": "1.0.0",
+  "description": "A simplified interface to interact with the Spotify Web API.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saurinpatel20/Spotify-Node-Wrapper.git"
+  },
+  "keywords": [
+    "Spotify",
+    "Nodejs",
+    "API",
+    "fetch"
+  ],
+  "author": "Saurin Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Saurinpatel20/Spotify-Node-Wrapper/issues"
+  },
+  "homepage": "https://github.com/Saurinpatel20/Spotify-Node-Wrapper#readme"
+}

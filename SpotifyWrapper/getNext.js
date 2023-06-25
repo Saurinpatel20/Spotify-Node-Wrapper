@@ -4,7 +4,7 @@ import querystring from 'querystring';
 
 const baseURI = "https://api.spotify.com/v1/";
 
-export const getNext = async (accessToken, nextURL) => {
+const getNext = async (accessToken, nextURL) => {
     const options = {
         method: 'GET',
         headers: {
@@ -17,3 +17,6 @@ export const getNext = async (accessToken, nextURL) => {
     return response.json();
 }
 
+export {
+    getNext,
+}
