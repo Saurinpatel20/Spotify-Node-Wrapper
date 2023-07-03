@@ -29,13 +29,10 @@ const getSeveralShows = async (accessToken, listOfShowID) => {
             message: "You passed in no show IDs in the array.",
         };
     }
-    
+
     let ids = '?ids=';
-    listOfShowID.forEach(show => {
-        ids += `${show},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfShowID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -130,11 +127,8 @@ const removeUsersSavedShows = async (accessToken, listOfShowID) => {
     }
     
     let ids = '?ids=';
-    listOfShowID.forEach(show => {
-        ids += `${show},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfShowID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'DELETE',
@@ -169,11 +163,8 @@ const checkUsersSavedShows = async (accessToken, listOfShowID) => {
     }
     
     let ids = '?ids=';
-    listOfShowID.forEach(show => {
-        ids += `${show},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfShowID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',

@@ -30,7 +30,9 @@ const getSeveralEpisodes = async (accessToken, listOfEpisodeID) => {
         };
     }
     
-    const ids = listOfEpisodeID.join(",");
+    let ids = '?ids=';
+    let albums = listOfEpisodeID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -40,7 +42,7 @@ const getSeveralEpisodes = async (accessToken, listOfEpisodeID) => {
         },
     };
     
-    const response = await fetch(`${baseURI}episodes?ids=${ids}`, options);
+    const response = await fetch(`${baseURI}episodes${ids}`, options);
     return response.json();
 }
 

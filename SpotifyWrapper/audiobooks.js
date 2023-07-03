@@ -32,11 +32,8 @@ const getSeveralAudiobooks = async (accessToken, listOfAudiobookID) => {
     }
     
     let ids = '?ids=';
-    listOfAudiobookID.map(async (audiobook) => {
-        ids += `${audiobook},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAudiobookID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -93,11 +90,8 @@ const saveAudiobooksForCurrentUser = async (accessToken, listOfAudiobookID) => {
     }
     
     let ids = '?ids=';
-    listOfAudiobookID.map(async (audiobook) => {
-        ids += `${audiobook},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAudiobookID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'PUT',
@@ -131,13 +125,10 @@ const removeUsersSavedAudiobooks = async (accessToken, listOfAudiobookID) => {
             message: "You passed in no audiobook IDs in the array.",
         };
     }
-    
+
     let ids = '?ids=';
-    listOfAudiobookID.map(async (audiobook) => {
-        ids += `${audiobook},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAudiobookID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'DELETE',
@@ -171,13 +162,10 @@ const checkUsersSavedAudiobooks = async (accessToken, listOfAudiobookID) => {
             message: "You passed in no audiobook IDs in the array.",
         };
     }
-    
+
     let ids = '?ids=';
-    listOfAudiobookID.map(async (album) => {
-        ids += `${album},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAudiobookID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',

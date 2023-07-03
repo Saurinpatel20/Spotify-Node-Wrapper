@@ -31,11 +31,8 @@ const getSeveralChapters = async (accessToken, listOfChapterID) => {
     }
     
     let ids = '?ids=';
-    listOfChapterID.forEach((chapter) => {
-        ids += `${chapter},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfChapterID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',

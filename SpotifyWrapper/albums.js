@@ -32,11 +32,8 @@ const getSeveralAlbums = async (accessToken, listOfAlbumID) => {
     }
     
     let ids = '?ids=';
-    listOfAlbumID.map(async (album) => {
-        ids += `${album},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAlbumID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -93,11 +90,8 @@ const saveAlbumsForCurrentUser = async (accessToken, listOfAlbumID) => {
     }
     
     let ids = '?ids=';
-    listOfAlbumID.map(async (album) => {
-        ids += `${album},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAlbumID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'PUT',
@@ -133,11 +127,8 @@ const removeUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
     }
     
     let ids = '?ids=';
-    listOfAlbumID.map(async (album) => {
-        ids += `${album},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAlbumID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'DELETE',
@@ -171,13 +162,10 @@ const checkUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
             message: "You passed in no album IDs in the array.",
         };
     }
-    
+
     let ids = '?ids=';
-    listOfAlbumID.map(async (album) => {
-        ids += `${album},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfAlbumID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -188,10 +176,7 @@ const checkUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
     };
     
     const response = await fetch(`${baseURI}me/albums/contains${ids}`, options);
-
-    return {
-        response: await response.json(),
-    };
+    return response.json()
 }
 
 const getNewReleases = async (accessToken) => {

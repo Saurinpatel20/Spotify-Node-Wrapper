@@ -30,13 +30,10 @@ const getSeveralArtists = async (accessToken, listOfArtistID) => {
             message: "You passed in no artist IDs in the array.",
         };
     }
-    
+
     let ids = '?ids=';
-    listOfArtistID.map(async (album) => {
-        ids += `${album},`;
-    })
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfArtistID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',

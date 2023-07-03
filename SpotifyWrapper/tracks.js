@@ -31,11 +31,8 @@ const getSeveralTracks = async (accessToken, listOfTrackID) => {
     }
     
     let ids = '?ids=';
-    listOfTrackID.forEach(track => {
-        ids += `${track},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfTrackID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -78,11 +75,8 @@ const saveTracksForCurrentUser = async (accessToken, listOfTrackID) => {
     }
     
     let ids = '?ids=';
-    listOfTrackID.forEach(track => {
-        ids += `${track},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfTrackID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'PUT',
@@ -117,11 +111,8 @@ const removeUsersSavedTracks = async (accessToken, listOfTrackID) => {
     }
     
     let ids = '?ids=';
-    listOfTrackID.forEach(track => {
-        ids += `${track},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfTrackID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'DELETE',
@@ -156,11 +147,8 @@ const checkUsersSavedTracks = async (accessToken, listOfTrackID) => {
     }
     
     let ids = '?ids=';
-    listOfTrackID.forEach(track => {
-        ids += `${track},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfTrackID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
@@ -193,11 +181,8 @@ const getTracksAudioFeatures = async (accessToken, listOfTrackID) => {
     }
     
     let ids = '?ids=';
-    listOfTrackID.forEach(track => {
-        ids += `${track},`;
-    });
-    
-    ids = ids.slice(0, -1);
+    let albums = listOfTrackID.join(',');
+    ids += `${albums}`;
     
     const options = {
         method: 'GET',
