@@ -2,6 +2,14 @@ import fetch from 'node-fetch';
 
 const baseURI = "https://api.spotify.com/v1/";
 
+/**
+* Get Spotify catalog information for a single album.
+* @async
+* @param {string} accessToken - The access token for authentication with the Spotify API.
+* @param {string} albumID - The ID of the album to retrieve information for.
+* @throws {Error} Will throw an error if there's an issue with the API request or response.
+* @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+*/
 const getAlbum = async (accessToken, albumID) => {
     const options = {
         method: 'GET',
@@ -15,6 +23,14 @@ const getAlbum = async (accessToken, albumID) => {
     return response.json();
 }
 
+/**
+ * Get Spotify catalog information for multiple albums identified by their Spotify IDs.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string[]} listOfAlbumID - An array of Spotify IDs representing the albums to retrieve information for.
+ * @throws {Error} Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+*/
 const getSeveralAlbums = async (accessToken, listOfAlbumID) => {
     
     if (listOfAlbumID.length > 20) {
@@ -46,6 +62,7 @@ const getSeveralAlbums = async (accessToken, listOfAlbumID) => {
     const response = await fetch(`${baseURI}albums${ids}`, options);
     return response.json();
 }
+
 
 const getAlbumTracks = async (accessToken, albumID) => {
     const options = {
