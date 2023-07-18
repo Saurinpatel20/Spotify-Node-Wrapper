@@ -28,7 +28,7 @@ const getAlbum = async (accessToken, albumID) => {
  * @async
  * @param {string} accessToken - The access token for authentication with the Spotify API.
  * @param {string[]} listOfAlbumID - An array of Spotify IDs representing the albums to retrieve information for.
- * @throws {Error} Will throw an error if there's an issue with the API request or response.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
 */
 const getSeveralAlbums = async (accessToken, listOfAlbumID) => {
@@ -63,7 +63,14 @@ const getSeveralAlbums = async (accessToken, listOfAlbumID) => {
     return response.json();
 }
 
-
+/**
+ * Get Spotify catalog information about an album’s tracks.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} albumID - An album ID representing the album to retrieve information for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+ */
 const getAlbumTracks = async (accessToken, albumID) => {
     const options = {
         method: 'GET',
@@ -77,6 +84,13 @@ const getAlbumTracks = async (accessToken, albumID) => {
     return response.json();
 }
 
+/**
+ * Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+ */
 const getUsersSavedAlbums = async (accessToken) => {
     const options = {
         method: 'GET',
@@ -90,6 +104,14 @@ const getUsersSavedAlbums = async (accessToken) => {
     return response.json();
 }
 
+/**
+ * Save one or more albums to the current user’s ‘Your Music’ library.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string[]} listOfAlbumID - An array of Spotify IDs representing the albums to retrieve information for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+ */
 const saveAlbumsForCurrentUser = async (accessToken, listOfAlbumID) => {
     
     if (listOfAlbumID.length > 20) {
@@ -127,6 +149,14 @@ const saveAlbumsForCurrentUser = async (accessToken, listOfAlbumID) => {
     }
 }
 
+/**
+ * Remove one or more albums from the current user’s ‘Your Music’ library.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string[]} listOfAlbumID - An array of Spotify IDs representing the albums to retrieve information for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+ */
 const removeUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
     
     if (listOfAlbumID.length > 20) {
@@ -164,6 +194,14 @@ const removeUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
     }
 }
 
+/**
+ * Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string[]} listOfAlbumID - An array of Spotify IDs representing the albums to retrieve information for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+ */
 const checkUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
     
     if (listOfAlbumID.length > 20) {
@@ -196,6 +234,13 @@ const checkUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
     return response.json()
 }
 
+/**
+ * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API. 
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response. 
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
+ */
 const getNewReleases = async (accessToken) => {
     const options = {
         method: 'GET',
