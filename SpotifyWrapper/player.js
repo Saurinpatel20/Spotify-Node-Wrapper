@@ -2,6 +2,13 @@ import fetch from 'node-fetch';
 
 const baseURI = "https://api.spotify.com/v1/";
 
+/**
+ * Get information about the user's current playback state, including track, track progress, and active device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const getPlaybackState = async (accessToken) => {
     const options = {
         method: 'GET',
@@ -15,6 +22,14 @@ const getPlaybackState = async (accessToken) => {
     return response.json();
 }
 
+/**
+ * Transfer the user's playback to a new device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} deviceID - The ID of the device to transfer playback to.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const transferPlayback = async (accessToken, deviceID) => {
     const options = {
         method: 'PUT',
@@ -37,6 +52,13 @@ const transferPlayback = async (accessToken, deviceID) => {
     }
 }
 
+/**
+ * Get information about the user's currently available devices.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the available devices.
+ */
 const getAvailableDevices = async (accessToken) => {
     const options = {
         method: 'GET',
@@ -50,6 +72,13 @@ const getAvailableDevices = async (accessToken) => {
     return response.json();
 }
 
+/**
+ * Get the user's current playback, including track, track progress, and active device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's current playback.
+ */
 const getCurrentlyPlayingTrack = async (accessToken) => {
     const options = {
         method: 'GET',
@@ -63,6 +92,14 @@ const getCurrentlyPlayingTrack = async (accessToken) => {
     return response.json();
 }
 
+/**
+ * Starts the playback on the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const startPlayback = async (accessToken, deviceID) => {
     const options = {
         method: 'PUT',
@@ -81,6 +118,14 @@ const startPlayback = async (accessToken, deviceID) => {
     }
 }
 
+/**
+ * Pauses the playback on the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const pausePlayback = async (accessToken, deviceID) => {
     const options = {
         method: 'PUT',
@@ -99,6 +144,14 @@ const pausePlayback = async (accessToken, deviceID) => {
     }
 }
 
+/**
+ * Skips to the next track in the queue for the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const skipToNextTrack = async (accessToken, deviceID) => {
     const options = {
         method: 'POST',
@@ -117,6 +170,14 @@ const skipToNextTrack = async (accessToken, deviceID) => {
     }
 }
 
+/**
+ * Skips to the previous track in the queue for the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const skipToPreviousTrack = async (accessToken, deviceID) => {
     const options = {
         method: 'POST',
@@ -135,6 +196,15 @@ const skipToPreviousTrack = async (accessToken, deviceID) => {
     }
 }
 
+/**
+ * Seeks to the specified position in the currently playing track for the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} deviceID - The ID of the device
+ * @param {number} positionMs - The position in milliseconds to seek to. Must be a positive number.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const seekToPosition = async (accessToken, deviceID, positionMs) => {
     const options = {
         method: 'PUT',
@@ -153,6 +223,15 @@ const seekToPosition = async (accessToken, deviceID, positionMs) => {
     }
 }
 
+/**
+ * Sets the repeat mode for the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} state - The state of the repeat mode. Must be one of 'context', 'track', or 'off'.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const setRepeatMode = async (accessToken, state, deviceID) => {
     if (!["context", "track", "off"].includes(state)) {
         throw new Error("Invalid state. Allowed values are 'context', 'track', or 'off'.");
@@ -175,6 +254,15 @@ const setRepeatMode = async (accessToken, state, deviceID) => {
     }
 }
 
+/**
+ * Sets the volume for the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {number} volumePercent - The volume percentage to set. Must be a number between 0 and 100.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const setPlaybackVolume = async (accessToken, volumePercent, deviceID) => {
     if (volumePercent < 0 || volumePercent > 100) {
         throw new Error("Invalid volume percentage. Allowed values are between 0 and 100.");
@@ -197,6 +285,15 @@ const setPlaybackVolume = async (accessToken, volumePercent, deviceID) => {
     }
 }
 
+/**
+ * Toggles shuffle mode for the specified device.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {boolean} state - The state of the shuffle mode. Must be either 'true' or 'false'.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const togglePlaybackShuffle = async (accessToken, state, deviceID) => {
     if (typeof state !== "boolean") {
         throw new Error("Invalid state. Allowed values are 'true' or 'false'.");
@@ -219,6 +316,15 @@ const togglePlaybackShuffle = async (accessToken, state, deviceID) => {
     }
 }
 
+/**
+ * Get the recently played tracks from the playback queue.
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {number} limit - The number of tracks to return. Must be between 1 and 50.
+ * @param {number} before - A Unix timestamp in milliseconds. Returns all tracks played before this timestamp. Must be before the current time.
+ * @param {number} after - A Unix timestamp in milliseconds. Returns all tracks played after this timestamp. Must be before the current time.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's recently played tracks.
+ */
 const getRecentlyPlayedTracks = async (accessToken, limit = 20, before = undefined, after = undefined) => {
     let url = `${baseURI}me/player/recently-played?limit=${limit}`;
     
@@ -241,6 +347,13 @@ const getRecentlyPlayedTracks = async (accessToken, limit = 20, before = undefin
     return response.json();
 }
 
+/**
+ * Get the user's playback queue.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback queue.
+ */
 const getUserQueue = async (accessToken) => {
     const options = {
         method: 'GET',
@@ -253,6 +366,15 @@ const getUserQueue = async (accessToken) => {
     return response.json();
 }
 
+/**
+ * Adds an item to the user's playback queue.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} uri - The URI of the item to add to the playback queue.
+ * @param {string} deviceID - The ID of the device
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
+ */
 const addItemToPlaybackQueue = async (accessToken, uri, deviceID) => {
     const options = {
         method: 'POST',

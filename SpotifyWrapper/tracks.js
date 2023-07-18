@@ -2,6 +2,14 @@ import fetch from 'node-fetch';
 
 const baseURI = "https://api.spotify.com/v1/";
 
+/**
+ * Get a track from the Spotify API.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {string} trackID - The Spotify ID of the track.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the track.
+ */
 const getTrack = async (accessToken, trackID) => {
     const options = {
         method: 'GET',
@@ -15,6 +23,14 @@ const getTrack = async (accessToken, trackID) => {
     return response.json();
 }
 
+/**
+ * Get a list of tracks from the Spotify API.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} listOfTrackID - The list of track IDs to retrieve from the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the tracks.
+ */
 const getSeveralTracks = async (accessToken, listOfTrackID) => {
     if (listOfTrackID.length > 50) {
         return {
@@ -46,6 +62,13 @@ const getSeveralTracks = async (accessToken, listOfTrackID) => {
     return response.json();
 }
 
+/**
+ * Get the current user's saved tracks from the Spotify API.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to the JSON object containing the tracks.
+ */
 const getUsersSavedTracks = async (accessToken) => {
     const options = {
         method: 'GET',
@@ -59,6 +82,14 @@ const getUsersSavedTracks = async (accessToken) => {
     return response.json();
 }
 
+/**
+ * Save one or more tracks to the current user's Spotify library.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} listOfTrackID - The list of track IDs to save to the user's library.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the response code.
+ */
 const saveTracksForCurrentUser = async (accessToken, listOfTrackID) => {
     if (listOfTrackID.length > 50) {
         return {
@@ -95,6 +126,14 @@ const saveTracksForCurrentUser = async (accessToken, listOfTrackID) => {
     }
 }
 
+/**
+ * Remove one or more tracks from the current user's Spotify library.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} listOfTrackID - The list of track IDs to remove from the user's library.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the response code.
+ */
 const removeUsersSavedTracks = async (accessToken, listOfTrackID) => {
     if (listOfTrackID.length > 50) {
         return {
@@ -131,6 +170,14 @@ const removeUsersSavedTracks = async (accessToken, listOfTrackID) => {
     }
 }
 
+/**
+ * Check if one or more tracks is already saved in the current Spotify user's "Your Music" library.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} listOfTrackID - The list of track IDs to check if they are saved in the user's library.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the response code.
+ */
 const checkUsersSavedTracks = async (accessToken, listOfTrackID) => {
     if (listOfTrackID.length > 50) {
         return {
@@ -165,6 +212,14 @@ const checkUsersSavedTracks = async (accessToken, listOfTrackID) => {
     };
 }
 
+/**
+ * Get audio features for multiple tracks based on their Spotify IDs.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} listOfTrackID - The list of track IDs to get audio features for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the audio features.
+ */
 const getTracksAudioFeatures = async (accessToken, listOfTrackID) => {
     if (listOfTrackID.length > 100) {
         return {
@@ -196,6 +251,14 @@ const getTracksAudioFeatures = async (accessToken, listOfTrackID) => {
     return response.json();
 }
 
+/**
+ * Get audio features for a singular track based on the Spotify IDs.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} trackID - A track ID to get audio features for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the audio features.
+ */
 const getTrackAudioFeatures = async (accessToken, trackID) => {
     const options = {
         method: 'GET',
@@ -209,6 +272,14 @@ const getTrackAudioFeatures = async (accessToken, trackID) => {
     return response.json();
 }
 
+/**
+ * Get audio analysis for a singular track based on the Spotify IDs.
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {array} trackID - A track ID to get audio analysis for.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the audio analysis.
+ */
 const getTrackAudioAnalysis = async (accessToken, trackID) => {
     const options = {
         method: 'GET',
@@ -222,6 +293,14 @@ const getTrackAudioAnalysis = async (accessToken, trackID) => {
     return response.json();
 }
 
+/**
+ * Get recommendations based on seeds (artists, tracks, and genres).
+ * @async
+ * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
+ * @param {object} queryParams - The query parameters to be passed in the request.
+ * @throws {Error} - Will throw an error if there's an issue with the API request or response.
+ * @returns {Promise<object>} A Promise that resolves to a JSON object containing the recommendations.
+ */
 const getRecommendations = async (accessToken, queryParams) => {
     const options = {
         method: 'GET',
