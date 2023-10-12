@@ -1,4 +1,8 @@
 import {
+    getSpotifyAccessToken,
+} from './SpotifyWrapper/auth.js'
+
+import {
     getAlbum,
     getSeveralAlbums,
     getAlbumTracks,
@@ -133,6 +137,7 @@ import {
 } from './SpotifyWrapper/users.js';
 
 export {
+    getSpotifyAccessToken,
     getAlbum,
     getSeveralAlbums,
     getAlbumTracks,
