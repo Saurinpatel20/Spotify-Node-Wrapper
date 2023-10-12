@@ -1,5 +1,12 @@
 import fetch from 'node-fetch';
 
+/**
+ * Get a Spotify access token for the given client ID, client secret, and redirect URI
+ * @param {string} clientId - The string representing the client ID
+ * @param {string} clientSecret - The string representing the client secret
+ * @param {string} redirectUri - The string representing the redirect URI
+ * @returns A Spotify Access Token in the form of a string
+ */
 async function getSpotifyAccessToken(clientId, clientSecret, redirectUri) {
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
