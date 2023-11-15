@@ -17,15 +17,17 @@ To use the Spotify Node Wrapper in your Node.js project, follow these steps:
 1. Require the package in your code:
 
    ```javascript
-   const { getAlbum, searchTracks } = require('spotify-node-wrapper');
+   const { getSpotifyAccessToken, getAlbum } = require('spotify-node-wrapper');
    ```
 
 2. Obtain an access token from Spotify using the necessary authentication flow. This access token is required to make authorized requests to the Spotify API.
+    ```javascript
+    const accessToken = await getSpotifyAccessToken('your-client-id', 'your-client-secret', 'your-redirect-uri')
+    ```
 
 3. Call the desired function, passing in the access token and any other necessary parameters. For example, to retrieve an album:
 
    ```javascript
-   const accessToken = 'your-access-token';
    const albumId = 'your-album-id';
 
    getAlbum(accessToken, albumId)
@@ -39,15 +41,18 @@ To use the Spotify Node Wrapper in your Node.js project, follow these steps:
      });
    ```
 
-   You can similarly call other functions such as `searchTracks`, passing in the access token and relevant parameters.
+   You can similarly call other functions, passing in the access token and relevant parameters.
 
 4. Make sure you handle asynchronous operations properly by using `async/await` or promises, depending on your preference and the capabilities of the functions you are using.
 
-Make sure to replace `'your-access-token'` and `'your-album-id'` with the actual values for your application. Additionally, ensure proper error handling in your code to handle any potential errors that may occur during the API requests.
+Make sure to replace `'your-album-id'` with the actual values for your use case. Additionally, ensure proper error handling in your code to handle any potential errors that may occur during the API requests.
 
 ## API Reference
 
 Yet to be completed. Refer to code for more information until this is complete.
+
+### getSpotifyAccessToken
+Get a Spotify access token for the given client ID, client secret, and redirect URI.
 
 ### getAlbum
 Retrieves detailed information about a specific album.

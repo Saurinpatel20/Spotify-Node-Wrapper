@@ -4,6 +4,7 @@ import { getSpotifyAccessToken } from './index.js';
 var accessToken = getSpotifyAccessToken('clientId', 'clientSecret', 'redirectUri');
 
 import { getAlbum } from './index.js';
+
 describe('getAlbum', () => {
     test('returns the correct album', async () => {
         // Mock the API response
