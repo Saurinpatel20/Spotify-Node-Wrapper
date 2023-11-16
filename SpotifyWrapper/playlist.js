@@ -6,7 +6,7 @@ const baseURI = "https://api.spotify.com/v1/";
  * Get the playlist with the specified playlist ID
  * @async
  * @param {string} accessToken - The access token for authentication with the Spotify API.
- * @param {*} playlistID - The ID of the playlist to be retrieved
+ * @param {string} playlistID - The ID of the playlist to be retrieved
  * @throws {Error} - Will throw an error if there's an issue with the API request or response.
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the playlist information.
  */
