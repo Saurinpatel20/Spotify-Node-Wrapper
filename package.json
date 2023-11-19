@@ -1,6 +1,6 @@
 {
   "name": "spotify-node-wrapper",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "A simplified interface to interact with the Spotify Web API.",
   "main": "index.js",
   "type": "module",
