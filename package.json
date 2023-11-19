@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -24,10 +24,11 @@
     "url": "https://github.com/Saurinpatel20/Spotify-Node-Wrapper/issues"
   },
   "homepage": "https://github.com/Saurinpatel20/Spotify-Node-Wrapper#readme",
-  "devDependencies": {
-    "jest": "^29.6.4"
-  },
   "dependencies": {
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "mocha": "^10.2.0"
   }
 }
