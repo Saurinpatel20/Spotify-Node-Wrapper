@@ -17,7 +17,7 @@ To use the Spotify Node Wrapper in your Node.js project, follow these steps:
 1. Require the package in your code:
 
    ```javascript
-   const { getSpotifyAccessToken, getAlbum } = require('spotify-node-wrapper');
+   import { getSpotifyAccessToken, getAlbum } from 'spotify-node-wrapper';
    ```
 
 2. Obtain an access token from Spotify using the necessary authentication flow. This access token is required to make authorized requests to the Spotify API.
