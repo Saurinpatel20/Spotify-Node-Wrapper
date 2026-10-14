@@ -1,13 +1,14 @@
 {
   "name": "spotify-node-wrapper",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A simplified interface to interact with the Spotify Web API.",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "mocha",
-    "lint": "node scripts/lint.mjs",
-    "prepublishOnly": "npm run lint && npm test"
+    "lint": "node scripts/lint.mjs && node scripts/gen-docs.mjs --check",
+    "prepublishOnly": "npm run lint && npm test",
+    "docs": "node scripts/gen-docs.mjs"
   },
   "repository": {
     "type": "git",

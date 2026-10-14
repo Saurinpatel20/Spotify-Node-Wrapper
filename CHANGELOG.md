@@ -1,5 +1,23 @@
 # Changelog
 
+## 3.1.0 - 2026-10-14
+
+### Added
+- Generic library endpoints from Spotify's February 2026 API: `saveToLibrary`, `removeFromLibrary`, and `checkLibraryContains` (`PUT`/`DELETE /me/library` and `GET /me/library/contains`, up to 40 URIs). They replace the per-type save, remove, follow, and contains endpoints.
+- `createPlaylistForCurrentUser` (`POST /me/playlists`), which replaces `createPlaylist` (`POST /users/{id}/playlists` was removed).
+- Optional arguments: `startPlayback(token, deviceID?, { contextUri, uris, offset, positionMs })`, `searchForItem(..., { limit, market, offset })`, `getUsersTopItems(..., { time_range, limit, offset })`, `getArtistsAlbums(..., { include_groups, ... })`, and `getPlaylistItems(..., { fields, limit, offset, market })`.
+- A complete generated API reference for all 93 endpoints. Each entry has a description, parameter table, required scopes, return shape, function-form and `SpotifyClient` examples, and Premium or restricted flags. All placeholder text is gone.
+- `npm run docs` generates the reference and the `index.d.ts` endpoint signatures, which are now typed per parameter. `npm run lint` fails if the docs are stale, an endpoint is undocumented, a README example doesn't parse, or placeholder text appears.
+- A test suite that runs every documented example against a mocked API (118 tests).
+
+### Changed
+- Playlist item endpoints now use `/playlists/{id}/items` instead of the removed `/tracks` path. `removePlaylistItems` sends the new `{ items: [{ uri }] }` body.
+
+### Fixed
+- `getCurrentUserProfile` sent a malformed `Authorization` header (a stray quote).
+- `saveEpisodesForCurrentUser` and `removeUsersSavedEpisodes` sent an invalid body and crashed parsing the empty success response.
+- JSDoc types for track helpers (`array` became `string[]` or `string`).
+
 ## 3.0.0 - 2026-10-14
 
 ### Added

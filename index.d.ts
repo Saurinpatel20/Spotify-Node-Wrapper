@@ -41,96 +41,194 @@ export interface SpotifyClientOptions {
   token?: SpotifyToken; refreshMarginMs?: number; onToken?: (t: SpotifyToken) => void; http?: Partial<HttpConfig>;
 }
 
+// <generated:endpoints> (npm run docs)
 /** Functional endpoint helpers: first argument is always the access token. */
-export function addCustomPlaylistCoverImage(accessToken: string, ...args: any[]): Promise<any>;
-export function addItemToPlaybackQueue(accessToken: string, ...args: any[]): Promise<any>;
-export function addItemsToPlaylist(accessToken: string, ...args: any[]): Promise<any>;
-export function changePlaylistDetails(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUserFollowsArtistsOrUsers(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUsersFollowPlaylist(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUsersSavedAlbums(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUsersSavedAudiobooks(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUsersSavedEpisodes(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUsersSavedShows(accessToken: string, ...args: any[]): Promise<any>;
-export function checkUsersSavedTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function createPlaylist(accessToken: string, ...args: any[]): Promise<any>;
-export function followArtistsOrUsers(accessToken: string, ...args: any[]): Promise<any>;
-export function followPlaylist(accessToken: string, ...args: any[]): Promise<any>;
-export function getAlbum(accessToken: string, ...args: any[]): Promise<any>;
-export function getAlbumTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function getArtist(accessToken: string, ...args: any[]): Promise<any>;
-export function getArtistTopTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function getArtistsAlbums(accessToken: string, ...args: any[]): Promise<any>;
-export function getArtistsRelatedArtists(accessToken: string, ...args: any[]): Promise<any>;
-export function getAudiobook(accessToken: string, ...args: any[]): Promise<any>;
-export function getAudiobookChapters(accessToken: string, ...args: any[]): Promise<any>;
-export function getAvailableDevices(accessToken: string, ...args: any[]): Promise<any>;
-export function getAvailableGenreSeeds(accessToken: string, ...args: any[]): Promise<any>;
-export function getAvailableMarkets(accessToken: string, ...args: any[]): Promise<any>;
-export function getCategoryPlaylists(accessToken: string, ...args: any[]): Promise<any>;
-export function getCurrentUserPlaylists(accessToken: string, ...args: any[]): Promise<any>;
-export function getCurrentUserProfile(accessToken: string, ...args: any[]): Promise<any>;
-export function getCurrentlyPlayingTrack(accessToken: string, ...args: any[]): Promise<any>;
-export function getEpisode(accessToken: string, ...args: any[]): Promise<any>;
-export function getFeaturedPlaylists(accessToken: string, ...args: any[]): Promise<any>;
-export function getFollowedArtists(accessToken: string, ...args: any[]): Promise<any>;
-export function getNewReleases(accessToken: string, ...args: any[]): Promise<any>;
-export function getNext(accessToken: string, ...args: any[]): Promise<any>;
-export function getPlaybackState(accessToken: string, ...args: any[]): Promise<any>;
-export function getPlaylist(accessToken: string, ...args: any[]): Promise<any>;
-export function getPlaylistCoverImage(accessToken: string, ...args: any[]): Promise<any>;
-export function getPlaylistItems(accessToken: string, ...args: any[]): Promise<any>;
-export function getRecentlyPlayedTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function getRecommendations(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralAlbums(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralArtists(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralAudiobooks(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralBrowseCategories(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralChapters(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralEpisodes(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralShows(accessToken: string, ...args: any[]): Promise<any>;
-export function getSeveralTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function getShow(accessToken: string, ...args: any[]): Promise<any>;
-export function getShowEpisodes(accessToken: string, ...args: any[]): Promise<any>;
-export function getSingleBrowseCategory(accessToken: string, ...args: any[]): Promise<any>;
-export function getSingleChapter(accessToken: string, ...args: any[]): Promise<any>;
-export function getTrack(accessToken: string, ...args: any[]): Promise<any>;
-export function getTrackAudioAnalysis(accessToken: string, ...args: any[]): Promise<any>;
-export function getTrackAudioFeatures(accessToken: string, ...args: any[]): Promise<any>;
-export function getTracksAudioFeatures(accessToken: string, ...args: any[]): Promise<any>;
-export function getUserPlaylists(accessToken: string, ...args: any[]): Promise<any>;
-export function getUserProfile(accessToken: string, ...args: any[]): Promise<any>;
-export function getUserQueue(accessToken: string, ...args: any[]): Promise<any>;
-export function getUsersSavedAlbums(accessToken: string, ...args: any[]): Promise<any>;
-export function getUsersSavedAudiobooks(accessToken: string, ...args: any[]): Promise<any>;
-export function getUsersSavedEpisodes(accessToken: string, ...args: any[]): Promise<any>;
-export function getUsersSavedShows(accessToken: string, ...args: any[]): Promise<any>;
-export function getUsersSavedTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function getUsersTopItems(accessToken: string, ...args: any[]): Promise<any>;
-export function pausePlayback(accessToken: string, ...args: any[]): Promise<any>;
-export function removePlaylistItems(accessToken: string, ...args: any[]): Promise<any>;
-export function removeUsersSavedAlbums(accessToken: string, ...args: any[]): Promise<any>;
-export function removeUsersSavedAudiobooks(accessToken: string, ...args: any[]): Promise<any>;
-export function removeUsersSavedEpisodes(accessToken: string, ...args: any[]): Promise<any>;
-export function removeUsersSavedShows(accessToken: string, ...args: any[]): Promise<any>;
-export function removeUsersSavedTracks(accessToken: string, ...args: any[]): Promise<any>;
-export function saveAlbumsForCurrentUser(accessToken: string, ...args: any[]): Promise<any>;
-export function saveAudiobooksForCurrentUser(accessToken: string, ...args: any[]): Promise<any>;
-export function saveEpisodesForCurrentUser(accessToken: string, ...args: any[]): Promise<any>;
-export function saveShowsForCurrentUser(accessToken: string, ...args: any[]): Promise<any>;
-export function saveTracksForCurrentUser(accessToken: string, ...args: any[]): Promise<any>;
-export function searchForItem(accessToken: string, ...args: any[]): Promise<any>;
-export function seekToPosition(accessToken: string, ...args: any[]): Promise<any>;
-export function setPlaybackVolume(accessToken: string, ...args: any[]): Promise<any>;
-export function setRepeatMode(accessToken: string, ...args: any[]): Promise<any>;
-export function skipToNextTrack(accessToken: string, ...args: any[]): Promise<any>;
-export function skipToPreviousTrack(accessToken: string, ...args: any[]): Promise<any>;
-export function startPlayback(accessToken: string, ...args: any[]): Promise<any>;
-export function togglePlaybackShuffle(accessToken: string, ...args: any[]): Promise<any>;
-export function transferPlayback(accessToken: string, ...args: any[]): Promise<any>;
-export function unfollowArtistsOrUsers(accessToken: string, ...args: any[]): Promise<any>;
-export function unfollowPlaylist(accessToken: string, ...args: any[]): Promise<any>;
-export function updatePlaylistItems(accessToken: string, ...args: any[]): Promise<any>;
+/** Get Spotify catalog information for a single album. */
+export function getAlbum(accessToken: string, albumID: string): Promise<any>;
+/** Get Spotify catalog information for multiple albums identified by their Spotify IDs. */
+export function getSeveralAlbums(accessToken: string, listOfAlbumID: string[]): Promise<any>;
+/** Get Spotify catalog information about an album’s tracks. */
+export function getAlbumTracks(accessToken: string, albumID: string): Promise<any>;
+/** Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library. */
+export function getUsersSavedAlbums(accessToken: string): Promise<any>;
+/** Save one or more albums to the current user’s ‘Your Music’ library. */
+export function saveAlbumsForCurrentUser(accessToken: string, listOfAlbumID: string[]): Promise<any>;
+/** Remove one or more albums from the current user’s ‘Your Music’ library. */
+export function removeUsersSavedAlbums(accessToken: string, listOfAlbumID: string[]): Promise<any>;
+/** Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library. */
+export function checkUsersSavedAlbums(accessToken: string, listOfAlbumID: string[]): Promise<any>;
+/** Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab). */
+export function getNewReleases(accessToken: string): Promise<any>;
+/** Get Spotify catalog information for a single artist identified by their unique Spotify ID. */
+export function getArtist(accessToken: string, artistID: string): Promise<any>;
+/** Get Spotify catalog information for several artists based on their Spotify IDs. */
+export function getSeveralArtists(accessToken: string, listOfArtistID: string[]): Promise<any>;
+/** Get Spotify catalog information about an artist’s albums. Optional parameters can be specified in the query string to filter and sort the response. */
+export function getArtistsAlbums(accessToken: string, artistID: string, query?: any): Promise<any>;
+/** Get Spotify catalog information about an artist’s top tracks by country. */
+export function getArtistTopTracks(accessToken: string, artistID: string, countryCode: string): Promise<any>;
+/** Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community’s listening history. */
+export function getArtistsRelatedArtists(accessToken: string, artistID: string): Promise<any>;
+/** Get Spotify catalog information for a single audiobook identified by their unique Spotify ID. */
+export function getAudiobook(accessToken: string, audiobookID: string): Promise<any>;
+/** Get Spotify catalog information for several audiobooks based on their Spotify IDs. */
+export function getSeveralAudiobooks(accessToken: string, listOfAudiobookID: string[]): Promise<any>;
+/** Get Spotify catalog information about an audiobook’s tracks. */
+export function getAudiobookChapters(accessToken: string, audiobookID: string): Promise<any>;
+/** Get spotify catalog information about a user's saved audiobooks. */
+export function getUsersSavedAudiobooks(accessToken: string): Promise<any>;
+/** Save one or more audiobooks to the current user's Spotify library. */
+export function saveAudiobooksForCurrentUser(accessToken: string, listOfAudiobookID: string[]): Promise<any>;
+/** Remove one or more audiobooks from the current user's Spotify library. */
+export function removeUsersSavedAudiobooks(accessToken: string, listOfAudiobookID: string[]): Promise<any>;
+/** Check if one or more audiobooks is already saved in the current Spotify user’s ‘Your Music’ library. */
+export function checkUsersSavedAudiobooks(accessToken: string, listOfAudiobookID: string[]): Promise<any>;
+/** Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab). */
+export function getSeveralBrowseCategories(accessToken: string): Promise<any>;
+/** Get a single category used to tag items in Spotify (on, for example, the Spotify player's "Browse" tab). */
+export function getSingleBrowseCategory(accessToken: string, categoryID: string): Promise<any>;
+/** Get Spotify catalog information for a single chapter identified by their unique Spotify ID. */
+export function getSingleChapter(accessToken: string, chapterID: string): Promise<any>;
+/** Get Spotify catalog information for several chapters based on their Spotify IDs. */
+export function getSeveralChapters(accessToken: string, listOfChapterID: string[]): Promise<any>;
+/** Get Spotify catalog information for a single episode identified by their unique Spotify ID. */
+export function getEpisode(accessToken: string, episodeID: string): Promise<any>;
+/** Get Spotify catalog information for several episodes based on their Spotify IDs. */
+export function getSeveralEpisodes(accessToken: string, listOfEpisodeID: string[]): Promise<any>;
+/** Get a list of episodes the user has saved in their Spotify library. */
+export function getUsersSavedEpisodes(accessToken: string): Promise<any>;
+/** Save one or more episodes to the user's Spotify library. */
+export function saveEpisodesForCurrentUser(accessToken: string, listOfEpisodeID: string[]): Promise<any>;
+/** Remove one or more episodes from the user's Spotify library. */
+export function removeUsersSavedEpisodes(accessToken: string, listOfEpisodeID: string[]): Promise<any>;
+/** Check if one or more episodes is already saved in the current Spotify user's library. */
+export function checkUsersSavedEpisodes(accessToken: string, listOfEpisodeID: string[]): Promise<any>;
+/** Get a list of available genre seeds for recommendations. */
+export function getAvailableGenreSeeds(accessToken: string): Promise<any>;
+/** Save items (tracks, albums, episodes, shows, audiobooks) or follow users/playlists, by Spotify URI. Uses `PUT /me/library` (added February 2026; replaces the per-type save/follow endpoints). */
+export function saveToLibrary(accessToken: string, uris: string[]): Promise<any>;
+/** Remove items from the library or unfollow users/playlists, by Spotify URI (`DELETE /me/library`). */
+export function removeFromLibrary(accessToken: string, uris: string[]): Promise<any>;
+/** Check whether items are saved/followed in the current user's library (`GET /me/library/contains`). */
+export function checkLibraryContains(accessToken: string, uris: string[]): Promise<any>;
+/** Get a list of available markets for tracks. */
+export function getAvailableMarkets(accessToken: string): Promise<any>;
+/** Get the next item from the Spotify API using the next URL parameter */
+export function getNext(accessToken: string, nextURL: string): Promise<any>;
+/** Get information about the user's current playback state, including track, track progress, and active device. */
+export function getPlaybackState(accessToken: string): Promise<any>;
+/** Transfer the user's playback to a new device. */
+export function transferPlayback(accessToken: string, deviceID?: string): Promise<any>;
+/** Get information about the user's currently available devices. */
+export function getAvailableDevices(accessToken: string): Promise<any>;
+/** Get the user's current playback, including track, track progress, and active device. */
+export function getCurrentlyPlayingTrack(accessToken: string): Promise<any>;
+/** Starts the playback on the specified device. */
+export function startPlayback(accessToken: string, deviceID?: string, playOptions?: {contextUri?:string, uris?:string[], offset?:number|{position?:number,uri?:string}, positionMs?:number}): Promise<any>;
+/** Pauses the playback on the specified device. */
+export function pausePlayback(accessToken: string, deviceID?: string): Promise<any>;
+/** Skips to the next track in the queue for the specified device. */
+export function skipToNextTrack(accessToken: string, deviceID?: string): Promise<any>;
+/** Skips to the previous track in the queue for the specified device. */
+export function skipToPreviousTrack(accessToken: string, deviceID?: string): Promise<any>;
+/** Seeks to the specified position in the currently playing track for the specified device. */
+export function seekToPosition(accessToken: string, deviceID: string | undefined, positionMs: number): Promise<any>;
+/** Sets the repeat mode for the specified device. */
+export function setRepeatMode(accessToken: string, state: string, deviceID?: string): Promise<any>;
+/** Sets the volume for the specified device. */
+export function setPlaybackVolume(accessToken: string, volumePercent: number, deviceID?: string): Promise<any>;
+/** Toggles shuffle mode for the specified device. */
+export function togglePlaybackShuffle(accessToken: string, state: boolean, deviceID?: string): Promise<any>;
+/** Get the recently played tracks from the playback queue. */
+export function getRecentlyPlayedTracks(accessToken: string, limit?: number, before?: number, after?: number): Promise<any>;
+/** Get the user's playback queue. */
+export function getUserQueue(accessToken: string): Promise<any>;
+/** Adds an item to the user's playback queue. */
+export function addItemToPlaybackQueue(accessToken: string, uri: string, deviceID?: string): Promise<any>;
+/** Get the playlist with the specified playlist ID */
+export function getPlaylist(accessToken: string, playlistID: string): Promise<any>;
+/** Change the details of a playlist to the specified information. */
+export function changePlaylistDetails(accessToken: string, playlistID: string, name?: string, isPublic?: boolean, isCollaborative?: boolean, description?: string): Promise<any>;
+/** Get the items in the playlist with the specified playlist ID. */
+export function getPlaylistItems(accessToken: string, playlistID: string, query?: {market?:string, fields?:string, limit?:number, offset?:number, additional_types?:string}): Promise<any>;
+/** Update the items in the playlist with the specified playlist ID. */
+export function updatePlaylistItems(accessToken: string, playlistID: string, uris?: string[], rangeStart?: number, insertBefore?: number, rangeLength?: number, snapshotID?: string): Promise<any>;
+/** Add items to the playlist with the specified playlist ID. */
+export function addItemsToPlaylist(accessToken: string, playlistID: string, uris: string[], position?: number): Promise<any>;
+/** Remove items from the playlist with the specified playlist ID. */
+export function removePlaylistItems(accessToken: string, playlistID: string, uris: string[], snapshotID?: string): Promise<any>;
+/** Get a list of the current user's playlists. */
+export function getCurrentUserPlaylists(accessToken: string): Promise<any>;
+/** Get a list of the current user's playlists. */
+export function getUserPlaylists(accessToken: string, userID: string): Promise<any>;
+/** Create a new playlist for the current user. */
+export function createPlaylist(accessToken: string, userID: string, name: string, isPublic?: boolean, isCollaborative?: boolean, description?: string): Promise<any>;
+/** Create a playlist for the current user (`POST /me/playlists`). Replaces `createPlaylist`, which used the removed `/users/{id}/playlists` endpoint. */
+export function createPlaylistForCurrentUser(accessToken: string, name: string, details?: {public?:boolean, collaborative?:boolean, description?:string}): Promise<any>;
+/** Get an object consisting of Spotify featured playlists. */
+export function getFeaturedPlaylists(accessToken: string): Promise<any>;
+/** Get a list of Spotify category playlists. */
+export function getCategoryPlaylists(accessToken: string, categoryID: string): Promise<any>;
+/** Get the playlist cover image given the ID. */
+export function getPlaylistCoverImage(accessToken: string, playlistID: string): Promise<any>;
+/** Add a custom cover image to a playlist. */
+export function addCustomPlaylistCoverImage(accessToken: string, playlistID: string, image: string): Promise<any>;
+/** Search Spotify for an item. */
+export function searchForItem(accessToken: string, query: string, types: string[], searchOptions?: {market?:string, limit?:number, offset?:number, include_external?:'audio'}): Promise<any>;
+/** Get Spotify catalog information for a single show identified by its unique Spotify ID. */
+export function getShow(accessToken: string, showID: string): Promise<any>;
+/** Get Spotify catalog information for several shows based on their Spotify IDs. */
+export function getSeveralShows(accessToken: string, listOfShowID: string[]): Promise<any>;
+/** Get Spotify catalog information about an show’s episodes. Optional parameters can be used to limit the number of episodes returned. */
+export function getShowEpisodes(accessToken: string, showID: string): Promise<any>;
+/** Get the current user's saved shows */
+export function getUsersSavedShows(accessToken: string): Promise<any>;
+/** Save one or more shows to the current user's library. */
+export function saveShowsForCurrentUser(accessToken: string, listOfShowID: string[]): Promise<any>;
+/** Remove one or more shows from the current user's library. */
+export function removeUsersSavedShows(accessToken: string, listOfShowID: string[]): Promise<any>;
+/** Check if one or more shows are already saved in the current Spotify user’s library. */
+export function checkUsersSavedShows(accessToken: string, listOfShowID: string[]): Promise<any>;
+/** Get a track from the Spotify API. */
+export function getTrack(accessToken: string, trackID: string): Promise<any>;
+/** Get a list of tracks from the Spotify API. */
+export function getSeveralTracks(accessToken: string, listOfTrackID: string[]): Promise<any>;
+/** Get the current user's saved tracks from the Spotify API. */
+export function getUsersSavedTracks(accessToken: string): Promise<any>;
+/** Save one or more tracks to the current user's Spotify library. */
+export function saveTracksForCurrentUser(accessToken: string, listOfTrackID: string[]): Promise<any>;
+/** Remove one or more tracks from the current user's Spotify library. */
+export function removeUsersSavedTracks(accessToken: string, listOfTrackID: string[]): Promise<any>;
+/** Check if one or more tracks is already saved in the current Spotify user's "Your Music" library. */
+export function checkUsersSavedTracks(accessToken: string, listOfTrackID: string[]): Promise<any>;
+/** Get audio features for multiple tracks based on their Spotify IDs. */
+export function getTracksAudioFeatures(accessToken: string, listOfTrackID: string[]): Promise<any>;
+/** Get audio features for a singular track based on the Spotify IDs. */
+export function getTrackAudioFeatures(accessToken: string, trackID: string): Promise<any>;
+/** Get audio analysis for a singular track based on the Spotify IDs. */
+export function getTrackAudioAnalysis(accessToken: string, trackID: string): Promise<any>;
+/** Get recommendations based on seeds (artists, tracks, and genres). */
+export function getRecommendations(accessToken: string, queryParams: Record<string, any>): Promise<any>;
+/** Get the current user's profile. */
+export function getCurrentUserProfile(accessToken: string): Promise<any>;
+/** Get the current user's top artists or tracks. */
+export function getUsersTopItems(accessToken: string, type: string, query?: any): Promise<any>;
+/** Get a user's profile. */
+export function getUserProfile(accessToken: string, userId: string): Promise<any>;
+/** Let a user follow a playlist. */
+export function followPlaylist(accessToken: string, playlistId: string, isPublic?: any): Promise<any>;
+/** Let a user unfollow a playlist. */
+export function unfollowPlaylist(accessToken: string, playlistId: string): Promise<any>;
+/** Get the current user's followed artists. */
+export function getFollowedArtists(accessToken: string): Promise<any>;
+/** Follow one or more artists or users. */
+export function followArtistsOrUsers(accessToken: string, ids: string[]): Promise<any>;
+/** Unfollow one or more artists or users. */
+export function unfollowArtistsOrUsers(accessToken: string, ids: string[]): Promise<any>;
+/** Check if one or more artists or users are followed by the current user. */
+export function checkUserFollowsArtistsOrUsers(accessToken: string, ids: string[]): Promise<any>;
+/** Check if one or more users follow a playlist. */
+export function checkUsersFollowPlaylist(accessToken: string, playlistId: string, userIds: string[]): Promise<any>;
 
 export class SpotifyClient {
   constructor(opts?: SpotifyClientOptions);
@@ -138,93 +236,98 @@ export class SpotifyClient {
   request<T = any>(path: string, opts?: RequestOptions): Promise<T>;
   paginate<T = any>(start: string | object, opts?: PaginateOptions): AsyncGenerator<T>;
   getAll<T = any>(start: string | object, opts?: PaginateOptions): Promise<T[]>;
-  addCustomPlaylistCoverImage(...args: any[]): Promise<any>;
-  addItemToPlaybackQueue(...args: any[]): Promise<any>;
-  addItemsToPlaylist(...args: any[]): Promise<any>;
-  changePlaylistDetails(...args: any[]): Promise<any>;
-  checkUserFollowsArtistsOrUsers(...args: any[]): Promise<any>;
-  checkUsersFollowPlaylist(...args: any[]): Promise<any>;
-  checkUsersSavedAlbums(...args: any[]): Promise<any>;
-  checkUsersSavedAudiobooks(...args: any[]): Promise<any>;
-  checkUsersSavedEpisodes(...args: any[]): Promise<any>;
-  checkUsersSavedShows(...args: any[]): Promise<any>;
-  checkUsersSavedTracks(...args: any[]): Promise<any>;
-  createPlaylist(...args: any[]): Promise<any>;
-  followArtistsOrUsers(...args: any[]): Promise<any>;
-  followPlaylist(...args: any[]): Promise<any>;
-  getAlbum(...args: any[]): Promise<any>;
-  getAlbumTracks(...args: any[]): Promise<any>;
-  getArtist(...args: any[]): Promise<any>;
-  getArtistTopTracks(...args: any[]): Promise<any>;
-  getArtistsAlbums(...args: any[]): Promise<any>;
-  getArtistsRelatedArtists(...args: any[]): Promise<any>;
-  getAudiobook(...args: any[]): Promise<any>;
-  getAudiobookChapters(...args: any[]): Promise<any>;
-  getAvailableDevices(...args: any[]): Promise<any>;
-  getAvailableGenreSeeds(...args: any[]): Promise<any>;
-  getAvailableMarkets(...args: any[]): Promise<any>;
-  getCategoryPlaylists(...args: any[]): Promise<any>;
-  getCurrentUserPlaylists(...args: any[]): Promise<any>;
-  getCurrentUserProfile(...args: any[]): Promise<any>;
-  getCurrentlyPlayingTrack(...args: any[]): Promise<any>;
-  getEpisode(...args: any[]): Promise<any>;
-  getFeaturedPlaylists(...args: any[]): Promise<any>;
-  getFollowedArtists(...args: any[]): Promise<any>;
-  getNewReleases(...args: any[]): Promise<any>;
-  getNext(...args: any[]): Promise<any>;
-  getPlaybackState(...args: any[]): Promise<any>;
-  getPlaylist(...args: any[]): Promise<any>;
-  getPlaylistCoverImage(...args: any[]): Promise<any>;
-  getPlaylistItems(...args: any[]): Promise<any>;
-  getRecentlyPlayedTracks(...args: any[]): Promise<any>;
-  getRecommendations(...args: any[]): Promise<any>;
-  getSeveralAlbums(...args: any[]): Promise<any>;
-  getSeveralArtists(...args: any[]): Promise<any>;
-  getSeveralAudiobooks(...args: any[]): Promise<any>;
-  getSeveralBrowseCategories(...args: any[]): Promise<any>;
-  getSeveralChapters(...args: any[]): Promise<any>;
-  getSeveralEpisodes(...args: any[]): Promise<any>;
-  getSeveralShows(...args: any[]): Promise<any>;
-  getSeveralTracks(...args: any[]): Promise<any>;
-  getShow(...args: any[]): Promise<any>;
-  getShowEpisodes(...args: any[]): Promise<any>;
-  getSingleBrowseCategory(...args: any[]): Promise<any>;
-  getSingleChapter(...args: any[]): Promise<any>;
-  getTrack(...args: any[]): Promise<any>;
-  getTrackAudioAnalysis(...args: any[]): Promise<any>;
-  getTrackAudioFeatures(...args: any[]): Promise<any>;
-  getTracksAudioFeatures(...args: any[]): Promise<any>;
-  getUserPlaylists(...args: any[]): Promise<any>;
-  getUserProfile(...args: any[]): Promise<any>;
-  getUserQueue(...args: any[]): Promise<any>;
-  getUsersSavedAlbums(...args: any[]): Promise<any>;
-  getUsersSavedAudiobooks(...args: any[]): Promise<any>;
-  getUsersSavedEpisodes(...args: any[]): Promise<any>;
-  getUsersSavedShows(...args: any[]): Promise<any>;
-  getUsersSavedTracks(...args: any[]): Promise<any>;
-  getUsersTopItems(...args: any[]): Promise<any>;
-  pausePlayback(...args: any[]): Promise<any>;
-  removePlaylistItems(...args: any[]): Promise<any>;
-  removeUsersSavedAlbums(...args: any[]): Promise<any>;
-  removeUsersSavedAudiobooks(...args: any[]): Promise<any>;
-  removeUsersSavedEpisodes(...args: any[]): Promise<any>;
-  removeUsersSavedShows(...args: any[]): Promise<any>;
-  removeUsersSavedTracks(...args: any[]): Promise<any>;
-  saveAlbumsForCurrentUser(...args: any[]): Promise<any>;
-  saveAudiobooksForCurrentUser(...args: any[]): Promise<any>;
-  saveEpisodesForCurrentUser(...args: any[]): Promise<any>;
-  saveShowsForCurrentUser(...args: any[]): Promise<any>;
-  saveTracksForCurrentUser(...args: any[]): Promise<any>;
-  searchForItem(...args: any[]): Promise<any>;
-  seekToPosition(...args: any[]): Promise<any>;
-  setPlaybackVolume(...args: any[]): Promise<any>;
-  setRepeatMode(...args: any[]): Promise<any>;
-  skipToNextTrack(...args: any[]): Promise<any>;
-  skipToPreviousTrack(...args: any[]): Promise<any>;
-  startPlayback(...args: any[]): Promise<any>;
-  togglePlaybackShuffle(...args: any[]): Promise<any>;
-  transferPlayback(...args: any[]): Promise<any>;
-  unfollowArtistsOrUsers(...args: any[]): Promise<any>;
-  unfollowPlaylist(...args: any[]): Promise<any>;
-  updatePlaylistItems(...args: any[]): Promise<any>;
+  getAlbum(albumID: string): Promise<any>;
+  getSeveralAlbums(listOfAlbumID: string[]): Promise<any>;
+  getAlbumTracks(albumID: string): Promise<any>;
+  getUsersSavedAlbums(): Promise<any>;
+  saveAlbumsForCurrentUser(listOfAlbumID: string[]): Promise<any>;
+  removeUsersSavedAlbums(listOfAlbumID: string[]): Promise<any>;
+  checkUsersSavedAlbums(listOfAlbumID: string[]): Promise<any>;
+  getNewReleases(): Promise<any>;
+  getArtist(artistID: string): Promise<any>;
+  getSeveralArtists(listOfArtistID: string[]): Promise<any>;
+  getArtistsAlbums(artistID: string, query?: any): Promise<any>;
+  getArtistTopTracks(artistID: string, countryCode: string): Promise<any>;
+  getArtistsRelatedArtists(artistID: string): Promise<any>;
+  getAudiobook(audiobookID: string): Promise<any>;
+  getSeveralAudiobooks(listOfAudiobookID: string[]): Promise<any>;
+  getAudiobookChapters(audiobookID: string): Promise<any>;
+  getUsersSavedAudiobooks(): Promise<any>;
+  saveAudiobooksForCurrentUser(listOfAudiobookID: string[]): Promise<any>;
+  removeUsersSavedAudiobooks(listOfAudiobookID: string[]): Promise<any>;
+  checkUsersSavedAudiobooks(listOfAudiobookID: string[]): Promise<any>;
+  getSeveralBrowseCategories(): Promise<any>;
+  getSingleBrowseCategory(categoryID: string): Promise<any>;
+  getSingleChapter(chapterID: string): Promise<any>;
+  getSeveralChapters(listOfChapterID: string[]): Promise<any>;
+  getEpisode(episodeID: string): Promise<any>;
+  getSeveralEpisodes(listOfEpisodeID: string[]): Promise<any>;
+  getUsersSavedEpisodes(): Promise<any>;
+  saveEpisodesForCurrentUser(listOfEpisodeID: string[]): Promise<any>;
+  removeUsersSavedEpisodes(listOfEpisodeID: string[]): Promise<any>;
+  checkUsersSavedEpisodes(listOfEpisodeID: string[]): Promise<any>;
+  getAvailableGenreSeeds(): Promise<any>;
+  saveToLibrary(uris: string[]): Promise<any>;
+  removeFromLibrary(uris: string[]): Promise<any>;
+  checkLibraryContains(uris: string[]): Promise<any>;
+  getAvailableMarkets(): Promise<any>;
+  getNext(nextURL: string): Promise<any>;
+  getPlaybackState(): Promise<any>;
+  transferPlayback(deviceID?: string): Promise<any>;
+  getAvailableDevices(): Promise<any>;
+  getCurrentlyPlayingTrack(): Promise<any>;
+  startPlayback(deviceID?: string, playOptions?: {contextUri?:string, uris?:string[], offset?:number|{position?:number,uri?:string}, positionMs?:number}): Promise<any>;
+  pausePlayback(deviceID?: string): Promise<any>;
+  skipToNextTrack(deviceID?: string): Promise<any>;
+  skipToPreviousTrack(deviceID?: string): Promise<any>;
+  seekToPosition(deviceID: string | undefined, positionMs: number): Promise<any>;
+  setRepeatMode(state: string, deviceID?: string): Promise<any>;
+  setPlaybackVolume(volumePercent: number, deviceID?: string): Promise<any>;
+  togglePlaybackShuffle(state: boolean, deviceID?: string): Promise<any>;
+  getRecentlyPlayedTracks(limit?: number, before?: number, after?: number): Promise<any>;
+  getUserQueue(): Promise<any>;
+  addItemToPlaybackQueue(uri: string, deviceID?: string): Promise<any>;
+  getPlaylist(playlistID: string): Promise<any>;
+  changePlaylistDetails(playlistID: string, name?: string, isPublic?: boolean, isCollaborative?: boolean, description?: string): Promise<any>;
+  getPlaylistItems(playlistID: string, query?: {market?:string, fields?:string, limit?:number, offset?:number, additional_types?:string}): Promise<any>;
+  updatePlaylistItems(playlistID: string, uris?: string[], rangeStart?: number, insertBefore?: number, rangeLength?: number, snapshotID?: string): Promise<any>;
+  addItemsToPlaylist(playlistID: string, uris: string[], position?: number): Promise<any>;
+  removePlaylistItems(playlistID: string, uris: string[], snapshotID?: string): Promise<any>;
+  getCurrentUserPlaylists(): Promise<any>;
+  getUserPlaylists(userID: string): Promise<any>;
+  createPlaylist(userID: string, name: string, isPublic?: boolean, isCollaborative?: boolean, description?: string): Promise<any>;
+  createPlaylistForCurrentUser(name: string, details?: {public?:boolean, collaborative?:boolean, description?:string}): Promise<any>;
+  getFeaturedPlaylists(): Promise<any>;
+  getCategoryPlaylists(categoryID: string): Promise<any>;
+  getPlaylistCoverImage(playlistID: string): Promise<any>;
+  addCustomPlaylistCoverImage(playlistID: string, image: string): Promise<any>;
+  searchForItem(query: string, types: string[], searchOptions?: {market?:string, limit?:number, offset?:number, include_external?:'audio'}): Promise<any>;
+  getShow(showID: string): Promise<any>;
+  getSeveralShows(listOfShowID: string[]): Promise<any>;
+  getShowEpisodes(showID: string): Promise<any>;
+  getUsersSavedShows(): Promise<any>;
+  saveShowsForCurrentUser(listOfShowID: string[]): Promise<any>;
+  removeUsersSavedShows(listOfShowID: string[]): Promise<any>;
+  checkUsersSavedShows(listOfShowID: string[]): Promise<any>;
+  getTrack(trackID: string): Promise<any>;
+  getSeveralTracks(listOfTrackID: string[]): Promise<any>;
+  getUsersSavedTracks(): Promise<any>;
+  saveTracksForCurrentUser(listOfTrackID: string[]): Promise<any>;
+  removeUsersSavedTracks(listOfTrackID: string[]): Promise<any>;
+  checkUsersSavedTracks(listOfTrackID: string[]): Promise<any>;
+  getTracksAudioFeatures(listOfTrackID: string[]): Promise<any>;
+  getTrackAudioFeatures(trackID: string): Promise<any>;
+  getTrackAudioAnalysis(trackID: string): Promise<any>;
+  getRecommendations(queryParams: Record<string, any>): Promise<any>;
+  getCurrentUserProfile(): Promise<any>;
+  getUsersTopItems(type: string, query?: any): Promise<any>;
+  getUserProfile(userId: string): Promise<any>;
+  followPlaylist(playlistId: string, isPublic?: any): Promise<any>;
+  unfollowPlaylist(playlistId: string): Promise<any>;
+  getFollowedArtists(): Promise<any>;
+  followArtistsOrUsers(ids: string[]): Promise<any>;
+  unfollowArtistsOrUsers(ids: string[]): Promise<any>;
+  checkUserFollowsArtistsOrUsers(ids: string[]): Promise<any>;
+  checkUsersFollowPlaylist(playlistId: string, userIds: string[]): Promise<any>;
 }
+// </generated:endpoints>

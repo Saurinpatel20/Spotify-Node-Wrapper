@@ -100,6 +100,7 @@ import {
 } from './SpotifyWrapper/player.js'
 
 import { 
+    createPlaylistForCurrentUser,
     getPlaylist,
     changePlaylistDetails,
     getPlaylistItems,
@@ -114,6 +115,12 @@ import {
     getPlaylistCoverImage,
     addCustomPlaylistCoverImage,
 } from './SpotifyWrapper/playlist.js';
+
+import {
+    saveToLibrary,
+    removeFromLibrary,
+    checkLibraryContains,
+} from './SpotifyWrapper/library.js';
 
 import { 
     searchForItem,
@@ -156,6 +163,10 @@ import {
 } from './SpotifyWrapper/users.js';
 
 bindEndpoints({
+    createPlaylistForCurrentUser,
+    saveToLibrary,
+    removeFromLibrary,
+    checkLibraryContains,
     getAlbum,
     getSeveralAlbums,
     getAlbumTracks,
@@ -264,6 +275,10 @@ export {
     configureHttp,
     SpotifyApiError,
     BASE_URI,
+    createPlaylistForCurrentUser,
+    saveToLibrary,
+    removeFromLibrary,
+    checkLibraryContains,
 
     getSpotifyAccessToken,
     getAlbum,

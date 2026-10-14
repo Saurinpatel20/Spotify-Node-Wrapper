@@ -96,17 +96,28 @@ const getCurrentlyPlayingTrack = async (accessToken) => {
  * Starts the playback on the specified device.
  * @async
  * @param {string} accessToken - The access token for authentication with the Spotify API.
- * @param {string} deviceID - The ID of the device
+ * @param {string} [deviceID] - The ID of the device. Omit to use the active device.
+ * @param {{contextUri?:string, uris?:string[], offset?:number|{position?:number,uri?:string}, positionMs?:number}} [playOptions] - What to play.
  * @throws {Error} - Will throw an error if there's an issue with the API request or response.
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's playback state.
  */
-const startPlayback = async (accessToken, deviceID) => {
+const startPlayback = async (accessToken, deviceID, playOptions) => {
     const options = {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${accessToken}`,
         },
     };
+    if (playOptions) {
+        const { contextUri, uris, offset, positionMs } = playOptions;
+        const body = {};
+        if (contextUri) body.context_uri = contextUri;
+        if (uris) body.uris = uris;
+        if (offset !== undefined) body.offset = typeof offset === 'number' ? { position: offset } : offset;
+        if (positionMs !== undefined) body.position_ms = positionMs;
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(body);
+    }
     
     const response = await fetch(`${baseURI}me/player/play?device_id=${deviceID}`, options);
     

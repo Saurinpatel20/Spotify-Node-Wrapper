@@ -113,10 +113,11 @@ const saveEpisodesForCurrentUser = async (accessToken, listOfEpisodeID) => {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(ids),
+        body: JSON.stringify({ ids: ids.split(',') }),
     };
     
     const response = await fetch(`${baseURI}me/episodes`, options);
+    if (response.ok) return { status: response.status, message: "Episodes saved to the library successfully." };
     return response.json();
 }
 
@@ -151,10 +152,11 @@ const removeUsersSavedEpisodes = async (accessToken, listOfEpisodeID) => {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(ids),
+        body: JSON.stringify({ ids: ids.split(',') }),
     };
     
     const response = await fetch(`${baseURI}me/episodes`, options);
+    if (response.ok) return { status: response.status, message: "Episodes removed from the library successfully." };
     return response.json();
 }
 

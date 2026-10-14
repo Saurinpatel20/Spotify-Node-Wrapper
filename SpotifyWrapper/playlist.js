@@ -64,10 +64,11 @@ const changePlaylistDetails = async (accessToken, playlistID, name, isPublic, is
  * @async
  * @param {string} accessToken - The access token for authentication with the Spotify API.
  * @param {string} playlistID - The ID of the playlist to get the items of.
+ * @param {{market?:string, fields?:string, limit?:number, offset?:number, additional_types?:string}} [query] - Optional query parameters.
  * @throws {Error} - Will throw an error if there's an issue with the API request or response.
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the playlist items.
  */
-const getPlaylistItems = async (accessToken, playlistID) => {
+const getPlaylistItems = async (accessToken, playlistID, query = {}) => {
     const options = {
         method: 'GET',
         headers: {
@@ -75,7 +76,8 @@ const getPlaylistItems = async (accessToken, playlistID) => {
         },
     };
     
-    const response = await fetch(`${baseURI}playlists/${playlistID}/tracks`, options);
+    const qs = new URLSearchParams(Object.entries(query).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)])).toString();
+    const response = await fetch(`${baseURI}playlists/${playlistID}/items${qs ? `?${qs}` : ''}`, options);
     return response.json();
 }
 
@@ -108,7 +110,7 @@ const updatePlaylistItems = async (accessToken, playlistID, uris, rangeStart, in
         }),
     };
     
-    const response = await fetch(`${baseURI}playlists/${playlistID}/tracks`, options);
+    const response = await fetch(`${baseURI}playlists/${playlistID}/items`, options);
     
     if (response.status === 200) {
         return {
@@ -145,7 +147,7 @@ const addItemsToPlaylist = async (accessToken, playlistID, uris, position) => {
         }),
     };
     
-    const response = await fetch(`${baseURI}playlists/${playlistID}/tracks`, options);
+    const response = await fetch(`${baseURI}playlists/${playlistID}/items`, options);
     
     if (response.status === 201) {
         return {
@@ -173,12 +175,12 @@ const removePlaylistItems = async (accessToken, playlistID, uris, snapshotID) =>
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            tracks: uris,
+            items: uris.map((u) => (typeof u === 'string' ? { uri: u } : u)),
             snapshot_id: snapshotID,
         }),
     };
     
-    const response = await fetch(`${baseURI}playlists/${playlistID}/tracks`, options);
+    const response = await fetch(`${baseURI}playlists/${playlistID}/items`, options);
     
     if (response.status === 200) {
         return {
@@ -352,7 +354,25 @@ const addCustomPlaylistCoverImage = async (accessToken, playlistID, image) => {
     }
 }
 
+/**
+ * Create a playlist for the current user (`POST /me/playlists`). Replaces `createPlaylist`, which used the removed `/users/{id}/playlists` endpoint.
+ * @async
+ * @param {string} accessToken - The access token for authentication with the Spotify API.
+ * @param {string} name - The name of the playlist.
+ * @param {{public?:boolean, collaborative?:boolean, description?:string}} [details] - Optional playlist details.
+ * @returns {Promise<object>} A Promise that resolves to the created playlist object.
+ */
+const createPlaylistForCurrentUser = async (accessToken, name, details = {}) => {
+    const response = await fetch(`${baseURI}me/playlists`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, ...details }),
+    });
+    return response.json();
+}
+
 export {
+    createPlaylistForCurrentUser,
     getPlaylist,
     changePlaylistDetails,
     getPlaylistItems,

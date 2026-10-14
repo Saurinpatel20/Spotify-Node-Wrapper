@@ -71,7 +71,7 @@ const getSeveralArtists = async (accessToken, listOfArtistID) => {
  * @throws {Error} - Will throw an error if there's an issue with the API request or response.
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the artist's albums.
 */
-const getArtistsAlbums = async (accessToken, artistID) => {
+const getArtistsAlbums = async (accessToken, artistID, query = {}) => {
     const options = {
         method: 'GET',
         headers: {
@@ -80,7 +80,7 @@ const getArtistsAlbums = async (accessToken, artistID) => {
         },
     };
 
-    const response = await fetch(`${baseURI}artists/${artistID}/albums`, options);
+    const response = await fetch(`${baseURI}artists/${artistID}/albums${Object.keys(query).length ? `?${new URLSearchParams(Object.entries(query).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)]))}` : ''}`, options);
     return response.json();
 }
 

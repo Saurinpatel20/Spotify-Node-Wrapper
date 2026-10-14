@@ -8,9 +8,10 @@ const baseURI = "https://api.spotify.com/v1/";
  * @param {string} accessToken - The access token for the user to be authenticated with the Spotify API.
  * @param {string} query - The search query.
  * @param {string[]} types - The types of items to search for.
+ * @param {{market?:string, limit?:number, offset?:number, include_external?:'audio'}} [searchOptions] - Optional parameters (limit max 10 since Feb 2026).
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the search results.
  */
-const searchForItem = async (accessToken, query, types) => {
+const searchForItem = async (accessToken, query, types, searchOptions = {}) => {
     const options = {
         method: 'GET',
         headers: {
@@ -21,7 +22,7 @@ const searchForItem = async (accessToken, query, types) => {
     const searchQuery = encodeURIComponent(query);
     const searchTypes = types.join(',');
 
-    const response = await fetch(`${baseURI}search?q=${searchQuery}&type=${searchTypes}`, options);
+    const response = await fetch(`${baseURI}search?q=${searchQuery}&type=${searchTypes}${Object.entries(searchOptions).filter(([, v]) => v != null).map(([k, v]) => `&${k}=${encodeURIComponent(v)}`).join('')}`, options);
     return response.json();
 };
 

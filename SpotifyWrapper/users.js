@@ -13,7 +13,7 @@ const getCurrentUserProfile = async (accessToken) => {
     const options = {
         method: 'GET',
         headers: {
-            'Authorization': `'Bearer ${accessToken}`,
+            'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
         },
     };
@@ -30,7 +30,7 @@ const getCurrentUserProfile = async (accessToken) => {
  * @throws {Error} - Will throw an error if there's an issue with the API request or response.
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the current user's top artists or tracks.
  */
-const getUsersTopItems = async (accessToken, type) => {
+const getUsersTopItems = async (accessToken, type, query = {}) => {
     const validTypes = ['artists', 'tracks'];
     if (!validTypes.includes(type)) {
         return {
@@ -47,7 +47,7 @@ const getUsersTopItems = async (accessToken, type) => {
         },
     };
 
-    const response = await fetch(`${baseURI}me/top/${type}`, options);
+    const response = await fetch(`${baseURI}me/top/${type}${Object.keys(query).length ? `?${new URLSearchParams(Object.entries(query).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)]))}` : ''}`, options);
     return response.json();
 }
 
