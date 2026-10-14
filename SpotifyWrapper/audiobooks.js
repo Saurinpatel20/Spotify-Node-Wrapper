@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from './http.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -19,7 +19,7 @@ const getAudiobook = async (accessToken, audiobookID) => {
         },
     };
     
-    const response = await fetch(`${baseURI}artists/${audiobookID}`, options);
+    const response = await fetch(`${baseURI}audiobooks/${audiobookID}`, options);
     return response.json();
 }
 
@@ -80,7 +80,7 @@ const getAudiobookChapters = async (accessToken, audiobookID) => {
         },
     };
 
-    const response = await fetch(`${baseURI}audiobook/${audiobookID}/chapters`, options);
+    const response = await fetch(`${baseURI}audiobooks/${audiobookID}/chapters`, options);
     return response.json();
 }
 

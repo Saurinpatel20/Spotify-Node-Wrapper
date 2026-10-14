@@ -1,11 +1,13 @@
 {
   "name": "spotify-node-wrapper",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "A simplified interface to interact with the Spotify Web API.",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "node scripts/lint.mjs",
+    "prepublishOnly": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
@@ -16,7 +18,10 @@
     "SpotifyAPI",
     "Nodejs",
     "API",
-    "fetch"
+    "fetch",
+    "pkce",
+    "oauth",
+    "spotify-web-api"
   ],
   "author": "Saurin Patel",
   "license": "ISC",
@@ -24,11 +29,25 @@
     "url": "https://github.com/Saurinpatel20/Spotify-Node-Wrapper/issues"
   },
   "homepage": "https://github.com/Saurinpatel20/Spotify-Node-Wrapper#readme",
-  "dependencies": {
-    "node-fetch": "^3.3.2"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "dotenv": "^16.3.1",
     "mocha": "^10.2.0"
+  },
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "SpotifyWrapper/",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18"
   }
 }

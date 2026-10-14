@@ -1,14 +1,14 @@
 import assert from 'assert';
 import { getSpotifyAccessToken, getAlbum, getSeveralAlbums, getAlbumTracks } from '../index.js';
 
-import dotenv from 'dotenv';
-dotenv.config();
 
 var accessToken;
 
 describe('getSpotifyAccessToken', function() {
     it('should return an access token', async function() {
-        accessToken = await getSpotifyAccessToken(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI);
+        global.fetch = async () => new Response(JSON.stringify({ access_token: 'mock-token', token_type: 'Bearer', expires_in: 3600 }), { status: 200 });
+        accessToken = await getSpotifyAccessToken('id', 'secret', 'http://localhost/cb');
+        assert.strictEqual(accessToken, 'mock-token');
         assert(accessToken);
     });
 });

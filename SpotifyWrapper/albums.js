@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from './http.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 

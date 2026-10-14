@@ -1,51 +1,188 @@
 # Spotify Node Wrapper
 
-The Spotify Node Wrapper is a Node.js package that provides a simplified interface to interact with the Spotify Web API. It wraps the various endpoints of the Spotify API and creates functions for each endpoint, allowing for quick and easy access to Spotify's data without the need to manually handle the fetching and parsing of data.
+A small, dependency-free Node.js wrapper for the [Spotify Web API](https://developer.spotify.com/documentation/web-api).
+Every endpoint is a plain async function, and a `SpotifyClient` class handles tokens for you: it mints them, caches them, and refreshes them.
+
+- **Zero runtime dependencies.** Uses Node's built-in `fetch` (undici), which keeps connections alive.
+- **Easy token minting.** Get a client-credentials token in one call, log in with Authorization Code + PKCE through a local callback server, or refresh tokens automatically.
+- **Resilient.** Retries `429 Too Many Requests` after the `Retry-After` delay, and retries transient 5xx and network errors with exponential backoff.
+- **Fast.** Identical GET requests that are in flight at the same time share one network call, and pagination helpers stream every page for you.
+- **Typed.** Ships with TypeScript declarations (`index.d.ts`).
+
+Requires **Node.js 18+**. ESM only.
 
 ## Installation
-
-To install the Spotify Node Wrapper, you can use npm (Node Package Manager). Open your terminal or command prompt and run the following command:
 
 ```bash
 npm install spotify-node-wrapper
 ```
 
-## Usage
+## Quick start (app-only data)
 
-To use the Spotify Node Wrapper in your Node.js project, follow these steps:
+Create an app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard), then set:
 
-1. Require the package in your code:
+```bash
+export SPOTIFY_CLIENT_ID=your-client-id
+export SPOTIFY_CLIENT_SECRET=your-client-secret
+```
 
-   ```javascript
-   import { getSpotifyAccessToken, getAlbum } from 'spotify-node-wrapper';
-   ```
+```js
+import { SpotifyClient } from 'spotify-node-wrapper';
 
-2. Obtain an access token from Spotify using the necessary authentication flow. This access token is required to make authorized requests to the Spotify API.
-    ```javascript
-    const accessToken = await getSpotifyAccessToken('your-client-id', 'your-client-secret', 'your-redirect-uri')
-    ```
+const spotify = new SpotifyClient(); // reads the env vars and mints/refreshes the token itself
+const album = await spotify.getAlbum('7ErFctcmAOQiP6xNktc5lX');
+const results = await spotify.searchForItem('Daft Punk', ['artist', 'track']);
+```
 
-3. Call the desired function, passing in the access token and any other necessary parameters. For example, to retrieve an album:
+Every endpoint function listed in the [API reference](#api-reference) is also a method on `SpotifyClient`. The only difference is that you leave out the `accessToken` argument.
 
-   ```javascript
-   const albumId = 'your-album-id';
+## Getting tokens
 
-   getAlbum(accessToken, albumId)
-     .then((album) => {
-       // Handle the album data
-       console.log(album);
-     })
-     .catch((error) => {
-       // Handle any errors
-       console.error(error);
-     });
-   ```
+| Need | Use |
+| --- | --- |
+| Public catalog data (albums, artists, search…) | `getClientCredentialsToken()` or `new SpotifyClient()` |
+| User data from a script or CLI | `authorizeWithLocalServer({ scopes })` (PKCE, no secret needed) |
+| User data from a web app | `getAuthorizationUrl()` + `exchangeAuthorizationCode()` |
+| Keep a user token fresh | `new SpotifyClient({ refreshToken })` or `createTokenManager({ refreshToken })` |
 
-   You can similarly call other functions, passing in the access token and relevant parameters.
+### Client credentials (one call)
 
-4. Make sure you handle asynchronous operations properly by using `async/await` or promises, depending on your preference and the capabilities of the functions you are using.
+```js
+import { getClientCredentialsToken, getSpotifyAccessToken } from 'spotify-node-wrapper';
 
-Make sure to replace `'your-album-id'` with the actual values for your use case. Additionally, ensure proper error handling in your code to handle any potential errors that may occur during the API requests.
+const token = await getClientCredentialsToken();          // { access_token, expires_in, expires_at, ... }
+const accessToken = await getSpotifyAccessToken(id, secret); // legacy helper that returns just the string
+```
+
+### User login from a script (Authorization Code + PKCE)
+
+Add `http://127.0.0.1:8888/callback` as a Redirect URI in your Spotify app. Then:
+
+```js
+import { authorizeWithLocalServer, SpotifyClient } from 'spotify-node-wrapper';
+
+const token = await authorizeWithLocalServer({
+  scopes: ['user-read-private', 'playlist-modify-private', 'user-modify-playback-state'],
+  onUrl: (url) => console.log('Open:', url), // or open it with the `open` package
+});
+
+// Save token.refresh_token somewhere safe, then:
+const spotify = new SpotifyClient({ token, onToken: (t) => saveSomewhere(t) });
+const me = await spotify.getCurrentUserProfile();
+```
+
+### User login from a web app
+
+```js
+import { generatePkcePair, getAuthorizationUrl, exchangeAuthorizationCode } from 'spotify-node-wrapper';
+
+const { codeVerifier, codeChallenge } = generatePkcePair(); // store codeVerifier in the session
+res.redirect(getAuthorizationUrl({ redirectUri, scopes: ['user-top-read'], state, codeChallenge }));
+
+// In your callback route:
+const token = await exchangeAuthorizationCode({ code: req.query.code, redirectUri, codeVerifier });
+// A confidential server can pass clientSecret instead of codeVerifier.
+```
+
+### Automatic refresh
+
+```js
+import { createTokenManager } from 'spotify-node-wrapper';
+
+const tokens = createTokenManager({ refreshToken: process.env.SPOTIFY_REFRESH_TOKEN });
+const accessToken = await tokens.getAccessToken(); // cached; refreshed 60s before expiry; concurrent callers share one refresh
+```
+
+`SpotifyClient` also retries a request once with a new token if Spotify returns `401`.
+
+## Environment variables
+
+| Variable | Used for |
+| --- | --- |
+| `SPOTIFY_CLIENT_ID` (or `CLIENT_ID`) | All flows |
+| `SPOTIFY_CLIENT_SECRET` (or `CLIENT_SECRET`) | Client credentials, confidential auth-code, and refresh |
+| `SPOTIFY_REDIRECT_URI` (or `REDIRECT_URI`) | Authorization code flows |
+| `SPOTIFY_REFRESH_TOKEN` | Default refresh token for `createTokenManager` and `SpotifyClient` |
+
+Never commit these values. Keep them in a `.env` file, which `.gitignore` excludes, or in your secret manager.
+
+## Pagination
+
+```js
+// Iterate lazily over every saved track (follows `next` links, 50 per page)
+for await (const item of spotify.paginate('me/tracks')) console.log(item.track.name);
+
+// Or collect everything (optionally capped)
+const playlists = await spotify.getAll('me/playlists', { maxItems: 200 });
+
+// Also works with a page you already fetched, including nested search results
+const first = await spotify.searchForItem('lofi', ['playlist']);
+const all = await spotify.getAll(first);
+
+// Bulk endpoints accept a limited number of IDs per call
+import { chunk } from 'spotify-node-wrapper';
+for (const ids of chunk(trackIds, 50)) await spotify.saveTracksForCurrentUser(ids);
+```
+
+## Raw requests
+
+Use this for any endpoint that doesn't have a helper yet:
+
+```js
+const data = await spotify.request('me/top/artists', { query: { time_range: 'short_term', limit: 10 } });
+await spotify.request('me/player/volume', { method: 'PUT', query: { volume_percent: 40 } });
+// Functional form:
+import { spotifyRequest } from 'spotify-node-wrapper';
+await spotifyRequest(accessToken, 'playlists/abc', { method: 'PUT', body: { name: 'New name' } });
+```
+
+## Configuration
+
+```js
+import { configureHttp } from 'spotify-node-wrapper';
+
+configureHttp({
+  maxRetries: 3,          // retries for 429 / 5xx / network errors
+  retryBaseDelayMs: 500,  // exponential backoff base (used when there is no Retry-After header)
+  maxRetryDelayMs: 30000, // longest single wait
+  dedupe: true,           // share identical in-flight GET requests
+});
+// or: new SpotifyClient({ http: { maxRetries: 5 } })
+```
+
+## Error handling
+
+`SpotifyClient` methods `request`, `paginate`, and `getAll`, plus `spotifyRequest` and all token helpers, throw a `SpotifyApiError` when a response is not 2xx:
+
+```js
+import { SpotifyApiError } from 'spotify-node-wrapper';
+
+try {
+  await spotify.request('albums/does-not-exist');
+} catch (e) {
+  if (e instanceof SpotifyApiError) console.error(e.status, e.body?.error?.message, e.url);
+}
+```
+
+The original endpoint helpers, such as `getAlbum`, keep their 2.x behavior for backward compatibility. They resolve with Spotify's JSON body, which holds an `error` object on failure. Mutation endpoints resolve with `{ status, message }`, and input checks (for example, too many IDs) also resolve with `{ status: "400", message }`.
+
+## Functional API
+
+Every helper takes the access token as its first argument:
+
+```js
+import { getClientCredentialsToken, getAlbum } from 'spotify-node-wrapper';
+const { access_token } = await getClientCredentialsToken();
+const album = await getAlbum(access_token, '7ErFctcmAOQiP6xNktc5lX');
+```
+
+## Development
+
+```bash
+npm install
+npm run lint
+npm test   # fully offline: all HTTP calls are mocked
+```
 
 ## API Reference
 
