@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -32,35 +33,11 @@ const getArtist = async (accessToken, artistID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the artist information.
 */
 const getSeveralArtists = async (accessToken, listOfArtistID) => {
-    
-    if (listOfArtistID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many artist IDs in your array. Max: 50 Artists.",
-        };
+    if (!Array.isArray(listOfArtistID) || listOfArtistID.length === 0) {
+        return { status: "400", message: "You passed in no artist IDs in the array." };
     }
-    
-    if (listOfArtistID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no artist IDs in the array.",
-        };
-    }
-
-    let ids = '?ids=';
-    let albums = listOfArtistID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        },
-    };
-
-    const response = await fetch(`${baseURI}artists${ids}`, options);
-    return response.json();
+    // The batch endpoint was removed (Feb 2026); fetch each artist individually (5 at a time).
+    return { artists: await fetchEach(listOfArtistID, (id) => getArtist(accessToken, id)) };
 }
 
 /**

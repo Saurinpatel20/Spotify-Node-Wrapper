@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -32,35 +33,11 @@ const getAudiobook = async (accessToken, audiobookID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the audiobook information.
 */
 const getSeveralAudiobooks = async (accessToken, listOfAudiobookID) => {
-    
-    if (listOfAudiobookID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many audiobook IDs in your array. Max: 50 Audiobooks.",
-        };
+    if (!Array.isArray(listOfAudiobookID) || listOfAudiobookID.length === 0) {
+        return { status: "400", message: "You passed in no audiobook IDs in the array." };
     }
-    
-    if (listOfAudiobookID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no audiobook IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfAudiobookID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        },
-    };
-
-    const response = await fetch(`${baseURI}audiobooks${ids}`, options);
-    return response.json();
+    // The batch endpoint was removed (Feb 2026); fetch each item individually (5 at a time).
+    return { audiobooks: await fetchEach(listOfAudiobookID, (id) => getAudiobook(accessToken, id)) };
 }
 
 /**
@@ -112,40 +89,13 @@ const getUsersSavedAudiobooks = async (accessToken) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the audiobook information.
  */
 const saveAudiobooksForCurrentUser = async (accessToken, listOfAudiobookID) => {
-    
-    if (listOfAudiobookID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many audiobooks in your array. Max: 50 audiobooks.",
-        };
+    if (!Array.isArray(listOfAudiobookID) || listOfAudiobookID.length === 0) {
+        return { status: "400", message: "You passed in no audiobook IDs in the array." };
     }
-    
-    if (listOfAudiobookID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no audiobook IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfAudiobookID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/audiobooks${ids}`, options);
-    
-    if (response.status == 200) {
-        return {
-            status: 200,
-            message: "The audiobooks were successfully saved.",
-        };
-    }
+    // Routed through PUT /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('PUT', accessToken, toUris(listOfAudiobookID, 'audiobook'));
+    if (error) return error;
+    return { status: 200, message: "The audiobooks were successfully saved." };
 }
 
 /**
@@ -157,40 +107,13 @@ const saveAudiobooksForCurrentUser = async (accessToken, listOfAudiobookID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the audiobook information.
  */
 const removeUsersSavedAudiobooks = async (accessToken, listOfAudiobookID) => {
-    
-    if (listOfAudiobookID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many audiobooks in your array. Max: 50 audiobooks.",
-        };
+    if (!Array.isArray(listOfAudiobookID) || listOfAudiobookID.length === 0) {
+        return { status: "400", message: "You passed in no audiobook IDs in the array." };
     }
-    
-    if (listOfAudiobookID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no audiobook IDs in the array.",
-        };
-    }
-
-    let ids = '?ids=';
-    let albums = listOfAudiobookID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/audiobooks${ids}`, options);
-    
-    if (response.status == 200) {
-        return {
-            status: 200,
-            message: "The audiobooks were successfully removed.",
-        };
-    }
+    // Routed through DELETE /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('DELETE', accessToken, toUris(listOfAudiobookID, 'audiobook'));
+    if (error) return error;
+    return { status: 200, message: "The audiobooks were successfully removed." };
 }
 
 /**
@@ -202,38 +125,11 @@ const removeUsersSavedAudiobooks = async (accessToken, listOfAudiobookID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the audiobook information.
  */
 const checkUsersSavedAudiobooks = async (accessToken, listOfAudiobookID) => {
-    
-    if (listOfAudiobookID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many audiobooks in your array. Max: 50 Audiobooks.",
-        };
+    if (!Array.isArray(listOfAudiobookID) || listOfAudiobookID.length === 0) {
+        return { status: "400", message: "You passed in no audiobook IDs in the array." };
     }
-    
-    if (listOfAudiobookID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no audiobook IDs in the array.",
-        };
-    }
-
-    let ids = '?ids=';
-    let albums = listOfAudiobookID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/audiobooks/contains${ids}`, options);
-
-    return {
-        response: await response.json(),
-    };
+    // Routed through GET /me/library/contains (Feb 2026); returns boolean[] in input order.
+    return libraryContains(accessToken, toUris(listOfAudiobookID, 'audiobook'));
 }
 
 export {

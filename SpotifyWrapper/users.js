@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -81,25 +82,11 @@ const getUserProfile = async (accessToken, userId) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's profile.
  */
 const followPlaylist = async (accessToken, playlistId, isPublic = true) => {
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            public: isPublic
-        })
-    };
-
-    const response = await fetch(`${baseURI}playlists/${playlistId}/followers`, options);
-
-    if (response.status == 200) {
-        return {
-            status: 200,
-            message: "Successfully followed the playlist.",
-        };
-    }
+    // Routed through PUT /me/library (Feb 2026). `isPublic` is accepted for compatibility;
+    // the new endpoint has no visibility option.
+    const error = await libraryWrite('PUT', accessToken, toUris([playlistId], 'playlist'));
+    if (error) return error;
+    return { status: 200, message: "Successfully followed the playlist." };
 }
 
 /**
@@ -111,21 +98,10 @@ const followPlaylist = async (accessToken, playlistId, isPublic = true) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the user's profile.
  */
 const unfollowPlaylist = async (accessToken, playlistId) => {
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-
-    const response = await fetch(`${baseURI}playlists/${playlistId}/followers`, options);
-
-    if (response.status == 200) {
-        return {
-            status: 200,
-            message: "Successfully unfollowed the playlist.",
-        };
-    }
+    // Routed through DELETE /me/library (Feb 2026).
+    const error = await libraryWrite('DELETE', accessToken, toUris([playlistId], 'playlist'));
+    if (error) return error;
+    return { status: 200, message: "Successfully unfollowed the playlist." };
 }
 
 /**
@@ -157,28 +133,14 @@ const getFollowedArtists = async (accessToken) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the current user's followed artists.
  */
 const followArtistsOrUsers = async (accessToken, ids) => {
-    if (ids.length === 0 || ids.length > 50) {
-        return {
-            status: "400",
-            message: "Invalid number of ids. The number of ids must be between 0 and 50.",
-        };
+    if (!Array.isArray(ids) || ids.length === 0) {
+        return { status: "400", message: "You passed in no artist or user IDs in the array." };
     }
-
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-
-    const response = await fetch(`${baseURI}me/following?type=artist,user&ids=${ids.join(',')}`, options);
-
-    if (response.status == 204) {
-        return {
-            status: 204,
-            message: "Successfully followed artists or users.",
-        };
-    }
+    // Routed through PUT /me/library (Feb 2026). 22-char base62 IDs are treated as artists,
+    // other IDs as users; pass full URIs (spotify:user:...) to be explicit.
+    const error = await libraryWrite('PUT', accessToken, toUris(ids, artistOrUser));
+    if (error) return error;
+    return { status: 204, message: "Successfully followed the artists or users." };
 }
 
 /**
@@ -190,28 +152,14 @@ const followArtistsOrUsers = async (accessToken, ids) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the current user's followed artists.
  */
 const unfollowArtistsOrUsers = async (accessToken, ids) => {
-    if (ids.length === 0 || ids.length > 50) {
-        return {
-            status: "400",
-            message: "Invalid number of ids. The number of ids must be between 0 and 50.",
-        };
+    if (!Array.isArray(ids) || ids.length === 0) {
+        return { status: "400", message: "You passed in no artist or user IDs in the array." };
     }
-
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-
-    const response = await fetch(`${baseURI}me/following?type=artist,user&ids=${ids.join(',')}`, options);
-
-    if (response.status == 204) {
-        return {
-            status: 204,
-            message: "Successfully unfollowed artists or users.",
-        };
-    }
+    // Routed through DELETE /me/library (Feb 2026). 22-char base62 IDs are treated as artists,
+    // other IDs as users; pass full URIs (spotify:user:...) to be explicit.
+    const error = await libraryWrite('DELETE', accessToken, toUris(ids, artistOrUser));
+    if (error) return error;
+    return { status: 204, message: "Successfully unfollowed the artists or users." };
 }
 
 /**
@@ -223,26 +171,11 @@ const unfollowArtistsOrUsers = async (accessToken, ids) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the current user's followed artists.
  */
 const checkUserFollowsArtistsOrUsers = async (accessToken, ids) => {
-    if (ids.length === 0 || ids.length > 50) {
-        return {
-            status: "400",
-            message: "Invalid number of ids. The number of ids must be between 0 and 50.",
-        };
+    if (!Array.isArray(ids) || ids.length === 0) {
+        return { status: "400", message: "You passed in no artist or user IDs in the array." };
     }
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-
-    const response = await fetch(`${baseURI}me/following/contains?type=artist,user&ids=${ids.join(',')}`, options);
-
-    return {
-        response: await response.json(),
-    };
+    // Routed through GET /me/library/contains (Feb 2026); returns boolean[] in input order.
+    return libraryContains(accessToken, toUris(ids, artistOrUser));
 }
 
 /**
@@ -255,26 +188,19 @@ const checkUserFollowsArtistsOrUsers = async (accessToken, ids) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the current user's followed artists.
  */
 const checkUsersFollowPlaylist = async (accessToken, playlistId, userIds) => {
-    if (userIds.length === 0 || userIds.length > 5) {
+    if (!Array.isArray(userIds) || userIds.length === 0 || userIds.length > 5) {
         return {
             status: "400",
-            message: "Invalid number of user ids. The number of ids must be between 0 and 5.",
+            message: "Invalid number of user ids. The number of ids must be between 1 and 5.",
         };
     }
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-
-    const response = await fetch(`${baseURI}playlists/${playlistId}/followers/contains?ids=${userIds.join(',')}`, options);
-
-    return {
-        response: await response.json(),
-    };
+    // Spotify (Feb 2026) can only check the *current* user, via GET /me/library/contains.
+    // IDs other than the current user's resolve to false.
+    const me = await (await fetch(`${baseURI}me`, { method: 'GET', headers: { 'Authorization': `Bearer ${accessToken}` } })).json();
+    if (!me || !me.id) return { response: me };
+    const follows = await libraryContains(accessToken, toUris([playlistId], 'playlist'));
+    if (!Array.isArray(follows)) return { response: follows };
+    return { response: userIds.map((id) => id === me.id && follows[0] === true) };
 }
 
 export {

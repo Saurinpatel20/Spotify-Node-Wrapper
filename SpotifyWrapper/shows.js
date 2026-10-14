@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -32,34 +33,11 @@ const getShow = async (accessToken, showID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the show information.
  */
 const getSeveralShows = async (accessToken, listOfShowID) => {
-    if (listOfShowID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many show IDs in your array. Max: 50 Shows.",
-        };
+    if (!Array.isArray(listOfShowID) || listOfShowID.length === 0) {
+        return { status: "400", message: "You passed in no show IDs in the array." };
     }
-    
-    if (listOfShowID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no show IDs in the array.",
-        };
-    }
-
-    let ids = '?ids=';
-    let albums = listOfShowID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}shows${ids}`, options);
-    return response.json();
+    // The batch endpoint was removed (Feb 2026); fetch each item individually (5 at a time).
+    return { shows: await fetchEach(listOfShowID, (id) => getShow(accessToken, id)) };
 }
 
 /**
@@ -112,42 +90,13 @@ const getUsersSavedShows = async (accessToken) => {
  * @returns {Promise<object>} A Promise that resolves to a JSON object containing a status code and message.
  */
 const saveShowsForCurrentUser = async (accessToken, listOfShowID) => {
-    if (listOfShowID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many shows in your array. Max: 50 Shows.",
-        };
+    if (!Array.isArray(listOfShowID) || listOfShowID.length === 0) {
+        return { status: "400", message: "You passed in no show IDs in the array." };
     }
-    
-    if (listOfShowID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no show IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    listOfShowID.forEach(show => {
-        ids += `${show},`;
-    });
-    
-    ids = ids.slice(0, -1);
-    
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/shows${ids}`, options);
-    
-    if (response.status === 200) {
-        return {
-            status: 200,
-            message: "The shows were successfully saved.",
-        };
-    }
+    // Routed through PUT /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('PUT', accessToken, toUris(listOfShowID, 'show'));
+    if (error) return error;
+    return { status: 200, message: "The shows were successfully saved." };
 }
 
 /**
@@ -159,39 +108,13 @@ const saveShowsForCurrentUser = async (accessToken, listOfShowID) => {
  * @returns {Promise<object>} A Promise that resolves to a JSON object containing a status code and message.
  */
 const removeUsersSavedShows = async (accessToken, listOfShowID) => {
-    if (listOfShowID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many shows in your array. Max: 50 Shows.",
-        };
+    if (!Array.isArray(listOfShowID) || listOfShowID.length === 0) {
+        return { status: "400", message: "You passed in no show IDs in the array." };
     }
-    
-    if (listOfShowID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no show IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfShowID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/shows${ids}`, options);
-    
-    if (response.status === 200) {
-        return {
-            status: 200,
-            message: "The shows were successfully removed.",
-        };
-    }
+    // Routed through DELETE /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('DELETE', accessToken, toUris(listOfShowID, 'show'));
+    if (error) return error;
+    return { status: 200, message: "The shows were successfully removed." };
 }
 
 /**
@@ -203,37 +126,11 @@ const removeUsersSavedShows = async (accessToken, listOfShowID) => {
  * @returns {Promise<object>} A Promise that resolves to a JSON object containing a status code and message.
  */
 const checkUsersSavedShows = async (accessToken, listOfShowID) => {
-    if (listOfShowID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many shows in your array. Max: 50 Shows.",
-        };
+    if (!Array.isArray(listOfShowID) || listOfShowID.length === 0) {
+        return { status: "400", message: "You passed in no show IDs in the array." };
     }
-    
-    if (listOfShowID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no show IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfShowID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/shows/contains${ids}`, options);
-
-    return {
-        response: await response.json(),
-    };
+    // Routed through GET /me/library/contains (Feb 2026); returns boolean[] in input order.
+    return libraryContains(accessToken, toUris(listOfShowID, 'show'));
 }
 
 export {

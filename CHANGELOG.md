@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.2.0 - 2026-10-14
+
+### Changed
+- 29 legacy helpers whose Spotify endpoints were removed in February 2026 now call the replacement endpoints. Their signatures and return shapes are unchanged:
+  - Per-type save, remove, and check helpers for albums, audiobooks, episodes, shows, and tracks (15 helpers) use `PUT`/`DELETE /me/library` and `GET /me/library/contains`. IDs are converted to URIs and sent in chunks of 40. `check*` helpers still resolve to `boolean[]` in input order.
+  - `followPlaylist`, `unfollowPlaylist`, `followArtistsOrUsers`, `unfollowArtistsOrUsers`, and `checkUserFollowsArtistsOrUsers` use `/me/library`. A 22-character base62 ID is treated as an artist, and any other ID as a user. Pass `spotify:user:` or `spotify:artist:` URIs to be explicit.
+  - `checkUsersFollowPlaylist` uses `/me/library/contains` for the current user and still returns `{ response: boolean[] }`. IDs other than the current user's resolve to `false`, because Spotify can no longer check other users.
+  - `getSeveralAlbums`, `getSeveralArtists`, `getSeveralAudiobooks`, `getSeveralChapters`, `getSeveralEpisodes`, `getSeveralShows`, and `getSeveralTracks` fetch each item individually, five at a time, and keep the `{ albums: [...] }`-style shape. Unknown IDs become `null`, as in the batch endpoints. The old 20/50-ID caps are lifted.
+  - `createPlaylist` uses `POST /me/playlists` and still returns `{ status: 201, message }`. `userID` is ignored, since playlists can only be created for the authenticated user.
+- Docs: removed the "Restricted" warnings. The 15 helpers with no public replacement now carry a short neutral note ("Requires Spotify extended quota mode"), and the README gains an "Endpoints without a replacement" section that lists them and explains why.
+
+### Added
+- Tests for every rerouted helper, covering new paths, URI conversion, chunking, error passthrough, order preservation, and return shapes (128 tests total).
+
 ## 3.1.0 - 2026-10-14
 
 ### Added

@@ -233,7 +233,7 @@ const getUserPlaylists = async (accessToken, userID) => {
  * Create a new playlist for the current user.
  * @async
  * @param {string} accessToken - The access token for authentication with the Spotify API.
- * @param {string} userID - The ID of the user to create the playlist for.
+ * @param {string} userID - Ignored since February 2026: playlists are always created for the authenticated user.
  * @param {string} name - The name of the playlist.
  * @param {boolean} isPublic - Whether the playlist should be public or not.
  * @param {boolean} isCollaborative - Whether the playlist should be collaborative or not.
@@ -242,28 +242,17 @@ const getUserPlaylists = async (accessToken, userID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the playlist.
  */
 const createPlaylist = async (accessToken, userID, name, isPublic, isCollaborative, description) => {
-    const options = {
+    // POST /users/{id}/playlists was removed (Feb 2026); routed through POST /me/playlists.
+    // Playlists can only be created for the authenticated user, so `userID` is ignored.
+    const response = await fetch(`${baseURI}me/playlists`, {
         method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            name: name,
-            public: isPublic,
-            collaborative: isCollaborative,
-            description: description,
-        }),
-    };
-    
-    const response = await fetch(`${baseURI}users/${userID}/playlists`, options);
-    
-    if (response.status === 201) {
-        return {
-            status: 201,
-            message: `Playlist created successfully.`,
-        };
+        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, public: isPublic, collaborative: isCollaborative, description }),
+    });
+    if (response.status === 201 || response.status === 200) {
+        return { status: 201, message: `Playlist created successfully.` };
     }
+    return response.json();
 }
 
 /**

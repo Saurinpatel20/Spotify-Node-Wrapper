@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -32,35 +33,11 @@ const getAlbum = async (accessToken, albumID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
 */
 const getSeveralAlbums = async (accessToken, listOfAlbumID) => {
-    
-    if (listOfAlbumID.length > 20) {
-        return {
-            status: "400",
-            message: "You have too many album IDs in your array. Max: 20 Albums.",
-        };
+    if (!Array.isArray(listOfAlbumID) || listOfAlbumID.length === 0) {
+        return { status: "400", message: "You passed in no album IDs in the array." };
     }
-    
-    if (listOfAlbumID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no album IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfAlbumID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}albums${ids}`, options);
-    return response.json();
+    // The batch endpoint was removed (Feb 2026); fetch each item individually (5 at a time).
+    return { albums: await fetchEach(listOfAlbumID, (id) => getAlbum(accessToken, id)) };
 }
 
 /**
@@ -113,40 +90,13 @@ const getUsersSavedAlbums = async (accessToken) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
  */
 const saveAlbumsForCurrentUser = async (accessToken, listOfAlbumID) => {
-    
-    if (listOfAlbumID.length > 20) {
-        return {
-            status: "400",
-            message: "You have too many albums in your array. Max: 20 Albums.",
-        };
+    if (!Array.isArray(listOfAlbumID) || listOfAlbumID.length === 0) {
+        return { status: "400", message: "You passed in no album IDs in the array." };
     }
-    
-    if (listOfAlbumID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no album IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfAlbumID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/albums${ids}`, options);
-    
-    if (response.status == 200) {
-        return {
-            status: 200,
-            message: "The albums were successfully saved.",
-        };
-    }
+    // Routed through PUT /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('PUT', accessToken, toUris(listOfAlbumID, 'album'));
+    if (error) return error;
+    return { status: 200, message: "The albums were successfully saved." };
 }
 
 /**
@@ -158,40 +108,13 @@ const saveAlbumsForCurrentUser = async (accessToken, listOfAlbumID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
  */
 const removeUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
-    
-    if (listOfAlbumID.length > 20) {
-        return {
-            status: "400",
-            message: "You have too many albums in your array. Max: 20 Albums.",
-        };
+    if (!Array.isArray(listOfAlbumID) || listOfAlbumID.length === 0) {
+        return { status: "400", message: "You passed in no album IDs in the array." };
     }
-    
-    if (listOfAlbumID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no album IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfAlbumID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/albums${ids}`, options);
-    
-    if (response.status == 200) {
-        return {
-            status: 200,
-            message: "The albums were successfully removed.",
-        };
-    }
+    // Routed through DELETE /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('DELETE', accessToken, toUris(listOfAlbumID, 'album'));
+    if (error) return error;
+    return { status: 200, message: "The albums were successfully removed." };
 }
 
 /**
@@ -203,35 +126,11 @@ const removeUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the album information.
  */
 const checkUsersSavedAlbums = async (accessToken, listOfAlbumID) => {
-    
-    if (listOfAlbumID.length > 20) {
-        return {
-            status: "400",
-            message: "You have too many albums in your array. Max: 20 Albums.",
-        };
+    if (!Array.isArray(listOfAlbumID) || listOfAlbumID.length === 0) {
+        return { status: "400", message: "You passed in no album IDs in the array." };
     }
-    
-    if (listOfAlbumID.length == 0) {
-        return {
-            status: "400",
-            message: "You passed in no album IDs in the array.",
-        };
-    }
-
-    let ids = '?ids=';
-    let albums = listOfAlbumID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/albums/contains${ids}`, options);
-    return response.json()
+    // Routed through GET /me/library/contains (Feb 2026); returns boolean[] in input order.
+    return libraryContains(accessToken, toUris(listOfAlbumID, 'album'));
 }
 
 /**

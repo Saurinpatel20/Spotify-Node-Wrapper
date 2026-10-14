@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -32,34 +33,11 @@ const getEpisode = async (accessToken, episodeID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the episode information.
 */
 const getSeveralEpisodes = async (accessToken, listOfEpisodeID) => {
-    if (listOfEpisodeID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many episode IDs in your array. Max: 50 Episodes.",
-        };
+    if (!Array.isArray(listOfEpisodeID) || listOfEpisodeID.length === 0) {
+        return { status: "400", message: "You passed in no episode IDs in the array." };
     }
-    
-    if (listOfEpisodeID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no episode IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfEpisodeID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}episodes${ids}`, options);
-    return response.json();
+    // The batch endpoint was removed (Feb 2026); fetch each item individually (5 at a time).
+    return { episodes: await fetchEach(listOfEpisodeID, (id) => getEpisode(accessToken, id)) };
 }
 
 /**
@@ -91,34 +69,13 @@ const getUsersSavedEpisodes = async (accessToken) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the episode information.
  */
 const saveEpisodesForCurrentUser = async (accessToken, listOfEpisodeID) => {
-    if (listOfEpisodeID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many episodes in your array. Max: 50 Episodes.",
-        };
+    if (!Array.isArray(listOfEpisodeID) || listOfEpisodeID.length === 0) {
+        return { status: "400", message: "You passed in no episode IDs in the array." };
     }
-    
-    if (listOfEpisodeID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no episode IDs in the array.",
-        };
-    }
-    
-    const ids = listOfEpisodeID.join(",");
-    
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ids: ids.split(',') }),
-    };
-    
-    const response = await fetch(`${baseURI}me/episodes`, options);
-    if (response.ok) return { status: response.status, message: "Episodes saved to the library successfully." };
-    return response.json();
+    // Routed through PUT /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('PUT', accessToken, toUris(listOfEpisodeID, 'episode'));
+    if (error) return error;
+    return { status: 200, message: "The episodes were successfully saved." };
 }
 
 /**
@@ -130,34 +87,13 @@ const saveEpisodesForCurrentUser = async (accessToken, listOfEpisodeID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the episode information.
  */
 const removeUsersSavedEpisodes = async (accessToken, listOfEpisodeID) => {
-    if (listOfEpisodeID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many episodes in your array. Max: 50 Episodes.",
-        };
+    if (!Array.isArray(listOfEpisodeID) || listOfEpisodeID.length === 0) {
+        return { status: "400", message: "You passed in no episode IDs in the array." };
     }
-    
-    if (listOfEpisodeID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no episode IDs in the array.",
-        };
-    }
-    
-    const ids = listOfEpisodeID.join(",");
-    
-    const options = {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ids: ids.split(',') }),
-    };
-    
-    const response = await fetch(`${baseURI}me/episodes`, options);
-    if (response.ok) return { status: response.status, message: "Episodes removed from the library successfully." };
-    return response.json();
+    // Routed through DELETE /me/library (Feb 2026); chunked by 40 URIs.
+    const error = await libraryWrite('DELETE', accessToken, toUris(listOfEpisodeID, 'episode'));
+    if (error) return error;
+    return { status: 200, message: "The episodes were successfully removed." };
 }
 
 /**
@@ -169,32 +105,11 @@ const removeUsersSavedEpisodes = async (accessToken, listOfEpisodeID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the episode information.
  */
 const checkUsersSavedEpisodes = async (accessToken, listOfEpisodeID) => {
-    if (listOfEpisodeID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many episode IDs in your array. Max: 50 Episodes.",
-        };
+    if (!Array.isArray(listOfEpisodeID) || listOfEpisodeID.length === 0) {
+        return { status: "400", message: "You passed in no episode IDs in the array." };
     }
-    
-    if (listOfEpisodeID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no episode IDs in the array.",
-        };
-    }
-    
-    const ids = listOfEpisodeID.join(",");
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}me/episodes/contains?ids=${ids}`, options);
-    return response.json();
+    // Routed through GET /me/library/contains (Feb 2026); returns boolean[] in input order.
+    return libraryContains(accessToken, toUris(listOfEpisodeID, 'episode'));
 }
 
 export {

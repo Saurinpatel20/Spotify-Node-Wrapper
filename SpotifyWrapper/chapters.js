@@ -1,4 +1,5 @@
 import fetch from './http.js';
+import { toUris, artistOrUser, libraryWrite, libraryContains, fetchEach } from './library.js';
 
 const baseURI = "https://api.spotify.com/v1/";
 
@@ -32,34 +33,11 @@ const getSingleChapter = async (accessToken, chapterID) => {
  * @returns {Promise<object>} A Promise that resolves to the JSON object containing the chapter information.
 */
 const getSeveralChapters = async (accessToken, listOfChapterID) => {
-    if (listOfChapterID.length > 50) {
-        return {
-            status: "400",
-            message: "You have too many chapter IDs in your array. Max: 50 Chapters.",
-        };
+    if (!Array.isArray(listOfChapterID) || listOfChapterID.length === 0) {
+        return { status: "400", message: "You passed in no chapter IDs in the array." };
     }
-    
-    if (listOfChapterID.length === 0) {
-        return {
-            status: "400",
-            message: "You passed in no chapter IDs in the array.",
-        };
-    }
-    
-    let ids = '?ids=';
-    let albums = listOfChapterID.join(',');
-    ids += `${albums}`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-        },
-    };
-    
-    const response = await fetch(`${baseURI}chapters${ids}`, options);
-    return response.json();
+    // The batch endpoint was removed (Feb 2026); fetch each chapter individually (5 at a time).
+    return { chapters: await fetchEach(listOfChapterID, (id) => getSingleChapter(accessToken, id)) };
 }
 
 export {
