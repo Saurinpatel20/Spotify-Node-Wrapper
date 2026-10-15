@@ -1,3 +1,4 @@
+import { describe, it, afterEach } from 'node:test';
 import assert from 'assert';
 import { getSpotifyAccessToken, getAlbum, getSeveralAlbums, getAlbumTracks } from '../index.js';
 

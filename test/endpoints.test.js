@@ -1,3 +1,4 @@
+import { describe, it, afterEach } from 'node:test';
 import assert from 'assert';
 import * as lib from '../index.js';
 import { sections } from '../scripts/endpoints.mjs';

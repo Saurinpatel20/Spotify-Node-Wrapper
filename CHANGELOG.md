@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.1 - 2026-10-14
+
+### Security
+- Fixed all `npm audit` findings, which came only from dev dependencies (`mocha` and its transitive packages). `mocha` is replaced with Node's built-in `node:test` runner, so the package now has **zero** runtime and dev dependencies, and `npm audit` reports 0 vulnerabilities.
+
+### Changed
+- `npm test` now runs `node --test test/`. Test files import `describe`, `it`, and `afterEach` from `node:test`. All 128 tests pass.
+
 ## 3.2.0 - 2026-10-14
 
 ### Changed
